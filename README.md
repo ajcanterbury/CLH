@@ -1,7 +1,7 @@
 ## < Coder's Little Helper >
-![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg) ![NPM Version][npm-image]][npm-url]
+![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)
 
-<CLH> is a PWA platform for running various web components (helpers) for working on coding, designing, and testing of applications.
+CLH is a PWA platform for running various web components (helpers) for working on coding, designing, and testing of applications.
 
 ![](screenShot.png)
 
