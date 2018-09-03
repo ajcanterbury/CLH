@@ -1,0 +1,45 @@
+<template>
+  <style>
+    input {
+      margin-right:0.3rem;
+      background: var(--fainter-color);
+      border: none;
+      padding: 0.2rem 0.4rem;
+      font-size:1rem;
+      color: #dee0f7;
+      float: right;
+    }
+    input[type="time"] {
+      min-width: 8rem;
+    }
+    input[type="date"] {
+      width: 8.1rem;
+    }
+    div {
+      margin-top:1rem;
+      padding: 0.5rem;
+      min-width: 15rem;
+      max-width: 100%;
+      height: calc(100% - 6.5rem);
+      background: #dee0f7;
+      color: #202020;
+      overflow-y: auto;
+      -webkit-user-select: text;
+      -moz-user-select: text;
+      user-select: text;
+    }
+  </style>
+  <span>Std: </span>
+  <input id="standardTime" type="time"/>
+  <input id="standardDate" type="date"/>
+  <br/><br/>
+  <span>GMT: </span>
+  <input id="gmtTime" type="time"/>
+  <input id="gmtDate" type="date"/>
+  <br/><br/>
+  <span>Unix Epoch: </span>
+  <input id="epochTime" type="number" min="0"/>
+  <br/><br/>
+  <span>Milliseconds: </span>
+  <input id="milliTime" type="number" min="0"/>
+</template>

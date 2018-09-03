@@ -1,0 +1,76 @@
+<template>
+  <style>
+    input {
+      margin-right:0.3rem;
+      background: var(--fainter-color);
+      border: none;
+      border-radius: 0;
+      padding: 0.2rem 0.4rem;
+      font-size:1.1rem;
+      color: #dee0f7;
+    }
+    input[type="number"] {
+      width: 4.2rem;
+    }
+    #chars {
+      margin-right: 0;
+      opacity: 0;
+      transition: opacity 0.5s ease-in;
+    }
+    select {
+      -webkit-appearance:none;
+      -moz-appearance:none;
+      margin-right:0.3rem;
+      appearance:none;
+      background: var(--fainter-color);
+      border: none;
+      border-radius: 0;
+      padding: 0.2rem 0.4rem;
+      font-size:1.1rem;
+      color: #dee0f7;
+    }
+    span {
+      margin-right: 1rem;
+    }
+    button {
+      background: var(--fainter-color);
+      float: right;
+      font-size: 1.1rem;
+      color: #dee0f7;
+      padding: 0.11rem 0.6rem;
+      border: 0.01rem solid var(--secondary-color);
+      border-radius: 0;
+    }
+    #output {
+      margin-top:1rem;
+      padding: 0.5rem;
+      min-width: 18rem;
+      max-width: 100%;
+      height: calc(100% - 7.89rem);
+      background: #dee0f7;
+      color: #202020;
+      overflow-y: auto;
+      -webkit-user-select: text;
+      -moz-user-select: text;
+      user-select: text;
+      word-wrap: break-word;
+    }
+    #mods {
+      margin-top: 0.5rem;
+    }
+  </style>
+  <input id="length" type="number" min="1" max="10000" value="20"/>
+  <select>
+    <option value="s">length random</option>
+    <option value="a">array of</option>
+    <option value="o">dictionary of</option>
+    <option value="p">phone numbers</option>
+  </select>
+  <input id="chars" type="number" min="1" max="10000" value="5"/>
+  <div id="mods">
+    <input id="special" type="checkbox"/><label for="special">Special Chars</label>
+    <input id="crypto" type="checkbox"/><label for="crypto">Crypto Strong</label>
+    <button>copy</button>
+  </div>
+  <div id="output"></div>
+</template>

@@ -1,0 +1,117 @@
+<template>
+  <style>
+    :root {
+      min-width: 24.4rem;
+    }
+    input {
+      margin-top: 0.5rem;
+      background: var(--fainter-color);
+      border: none;
+      padding: 0.2rem 0.4rem;
+      font-size:1.1rem;
+      color: #dee0f7;
+      width: 10rem;
+    }
+    span {
+      margin: 0.5rem;
+    }
+    select {
+      -webkit-appearance:none;
+      -moz-appearance:none;
+      appearance:none;
+      background: var(--fainter-color);
+      border: none;
+      border-radius: 0;
+      padding: 0.2rem 0.4rem;
+      font-size:1.1rem;
+      color: #dee0f7;
+    }
+    #baseTo {
+      margin-left: 6rem;
+    }
+    div {
+      margin-top:1rem;
+    }
+    @media only screen and (max-width: 400px) {
+      input {
+        width: 8rem;
+      }
+      #baseTo {
+        margin-left: 4rem;
+      }
+    }
+  </style>
+  <section>
+    <input type="text" id="numFrom" value="0"/>
+    <span>to</span> 
+    <input type="text" id="numTo"  value="0"/> 
+    <div>
+      <select id="baseFrom" value="10">
+        <option value="2">2 (binary)</option>
+        <option>3</option>
+        <option>4</option>
+        <option>5</option>
+        <option>6</option>
+        <option>7</option>
+        <option value="8">8 (octal)</option>
+        <option>9</option>
+        <option value="10" selected="">10 (decimal)</option>
+        <option>11</option>
+        <option>12</option>
+        <option>13</option>
+        <option>14</option>
+        <option>15</option>
+        <option value="16">16 (hex)</option>
+        <option>17</option>
+        <option>18</option>
+        <option>19</option>
+        <option>20</option>
+        <option>21</option>
+        <option>22</option>
+        <option>23</option>
+        <option>24</option>
+        <option>25</option>
+        <option>26</option>
+        <option>27</option>
+        <option>28</option>
+        <option>29</option>
+        <option>30</option>
+        <option>31</option>
+        <option>32</option>
+      </select>
+      <select id="baseTo" value="10">
+        <option value="2">2 (binary)</option>
+        <option>3</option>
+        <option>4</option>
+        <option>5</option>
+        <option>6</option>
+        <option>7</option>
+        <option value="8">8 (octal)</option>
+        <option>9</option>
+        <option value="10" selected="">10 (decimal)</option>
+        <option>11</option>
+        <option>12</option>
+        <option>13</option>
+        <option>14</option>
+        <option>15</option>
+        <option value="16">16 (hex)</option>
+        <option>17</option>
+        <option>18</option>
+        <option>19</option>
+        <option>20</option>
+        <option>21</option>
+        <option>22</option>
+        <option>23</option>
+        <option>24</option>
+        <option>25</option>
+        <option>26</option>
+        <option>27</option>
+        <option>28</option>
+        <option>29</option>
+        <option>30</option>
+        <option>31</option>
+        <option>32</option>
+      </select>
+    </div>
+  </section>
+</template>

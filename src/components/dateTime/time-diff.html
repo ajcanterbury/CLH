@@ -1,0 +1,35 @@
+<template>
+  <style>
+    input {
+      margin-right:0.3rem;
+      background: var(--fainter-color);
+      border: none;
+      padding: 0.2rem 0.4rem;
+      font-size:1rem;
+      width: 5rem;
+      color: #dee0f7;
+      float: right;
+    }
+    input[type="time"] {
+      min-width: 8rem;
+    }
+    input[type="date"] {
+      width: 8.1rem;
+    }
+    #days, #hours {
+      float:none;
+    }
+  </style>
+  <span>From: </span>
+  <input id="startTime" type="time"/>
+  <input id="startDate" type="date"/>
+  <br/><br/>
+  <span>to: </span>
+  <input id="modTime" type="time"/>
+  <input id="modDate" type="date"/>
+  <br/><br/>
+  <span>Days: </span>
+  <input id="days" type="number" value="0"/>
+  <span> Hours: </span>
+  <input id="hours" type="number" min="-1" max="24" value="0"/>
+</template>

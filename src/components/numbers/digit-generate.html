@@ -1,0 +1,131 @@
+<template>
+  <style>
+    input {
+      background: var(--fainter-color);
+      border: none;
+      padding: 0.2rem 0.4rem;
+      font-size:1.1rem;
+      color: #dee0f7;
+    }
+    input[type="number"] {
+      width: 4.2rem;
+    }
+    select {
+      -webkit-appearance:none;
+      -moz-appearance:none;
+      appearance:none;
+      margin-right:0.3rem;
+      background: var(--fainter-color);
+      border: none;
+      border-radius: 0;
+      padding: 0.2rem 0.4rem;
+      font-size:1.1rem;
+      color: #dee0f7;
+    }
+    button {
+      background: var(--fainter-color);
+      float: right;
+      font-size: 1.1rem;
+      color: #dee0f7;
+      padding: 0.11rem 0.6rem;
+      border: 0.01rem solid var(--secondary-color);
+      border-radius: 0;
+    }
+    #output {
+      margin-top:1rem;
+      padding: 0.5rem;
+      min-width: 15rem;
+      max-width: 100%;
+      min-height: 6.5rem;
+      height: calc(100% - 6.2rem);
+      background: #dee0f7;
+      color: #202020;
+      overflow-y: auto;
+      -webkit-user-select: text;
+      -moz-user-select: text;
+      user-select: text;
+      word-wrap: break-word;
+    }
+    #loader {
+      display: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      text-align: center;
+      height: 100%;
+      width: 100%;
+      background: rgba(0,0,0,0.3);
+      box-sizing: border-box;
+      padding-top: 20%;
+    }
+    .lds-ellipsis {
+      display: inline-block;
+      position: relative;
+      width: 64px;
+      height: 64px;
+    }
+    .lds-ellipsis div {
+      position: absolute;
+      top: 27px;
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: #fff;
+      animation-timing-function: cubic-bezier(0, 1, 1, 0);
+    }
+    .lds-ellipsis div:nth-child(1) {
+      left: 6px;
+      animation: lds-ellipsis1 0.6s infinite;
+    }
+    .lds-ellipsis div:nth-child(2) {
+      left: 6px;
+      animation: lds-ellipsis2 0.6s infinite;
+    }
+    .lds-ellipsis div:nth-child(3) {
+      left: 26px;
+      animation: lds-ellipsis2 0.6s infinite;
+    }
+    .lds-ellipsis div:nth-child(4) {
+      left: 45px;
+      animation: lds-ellipsis3 0.6s infinite;
+    }
+    @keyframes lds-ellipsis1 {
+      0% {
+        transform: scale(0);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+    @keyframes lds-ellipsis3 {
+      0% {
+        transform: scale(1);
+      }
+      100% {
+        transform: scale(0);
+      }
+    }
+    @keyframes lds-ellipsis2 {
+      0% {
+        transform: translate(0, 0);
+      }
+      100% {
+        transform: translate(19px, 0);
+      }
+    }
+  </style>
+  <select>
+    <option value="p">primes up to</option>
+    <option value="f">Fibonaccis</option>
+    <option value="pi">pi to decimal</option>
+    <option value="e"><i>e</i> to decimal</option>
+    <option value="ph">phi to decimal</option>
+    <option value="2">&Sqrt;2 to decimal</option>
+  </select>
+  <input type="number" min="1" max="2000" value="20"/>
+  <button>copy</button>
+  <div id="output"></div>
+  <div id="loader">
+    <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+  </div>
+</template>

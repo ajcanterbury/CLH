@@ -1,0 +1,135 @@
+<!-- The CLH menu controls what components are loaded on the page 
+      skip to html to add components -->
+<style>
+  clh-menu ul {
+    font-size: 0.9rem;
+    color: var(--faint-color);
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    display: inline-block;
+    position: relative;
+  }
+  clh-menu span {
+    margin-left: 1rem;
+    font-size: 0.95rem;
+    color: var(--primary-color);
+    cursor: crosshair;
+  }
+  clh-menu span:hover {
+    text-shadow: 0 0 0.8rem var(--highlight-color);
+  }
+  clh-menu li:hover {
+    text-shadow: 0 0 0.8rem var(--highlight-color);
+    color: var(--primary-color);
+  }
+  clh-menu .menuParent {
+    display: inline-block;
+    position: relative;
+    width: fit-content;
+    width: -moz-fit-content;
+    padding: 0.5rem 0.7rem 0.25rem;
+    text-align: center;
+  }
+  clh-menu .submenu {
+    position: absolute;
+    padding: 0.2rem 0;
+    text-shadow: none;
+    width: max-content;
+    width: -moz-max-content;
+    left: 0;
+    top: 1.6rem;
+    text-align: left;
+    background: rgba(12, 12, 12, 0.8);
+    box-shadow: 0.05rem 0.05rem 0.05rem #111;
+    -webkit-font-smoothing: antialiased;
+    transform-origin: 0% 0%;
+    transform: translate(0, -270%);
+    transition: transform 0.3s cubic-bezier(0.77,0.2,0.05,1.0);
+  }
+  clh-menu input {
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 2.2rem;
+    margin: -0.5rem 0 0 -1rem;
+    top: 0;
+    cursor: pointer;
+    opacity: 0;
+    z-index: 2;
+  }
+  clh-menu .inMenu:checked ~ .submenu {
+    transform: none;
+  }
+  clh-menu .submenu > li {
+    position: relative;
+  }
+  clh-menu .submenu li > a {
+    color: rgb(136, 136, 136);
+    display:block;
+    padding: 0.25rem 0.7rem 0.25rem 1.4rem;
+  }
+  clh-menu .submenu li > input {
+    height: 100%;
+    left: 0;
+    margin:0;
+  }
+  clh-menu .submenu li:hover > input + a {
+    color: var(--primary-color);
+  }
+  clh-menu .submenu li > input:checked + a {
+    color: var(--primary-color);
+  }
+  clh-menu .submenu li:hover > input:checked + a {
+    color: rgb(136, 136, 136);
+    text-shadow: 0 0 0.8rem var(--highlight-color);
+  }
+  @media only screen and (max-width: 400px) {
+    clh-menu .menuParent {
+      padding: 0.5rem 0.5rem 0.25rem;
+    }
+  }
+</style>
+<!-- add li with a checkbox to a submenu with the id attribute matching component name -->
+<span id="clhLogo" title="toggle all">&lt; CLH &gt;</span>
+<ul>
+  <li id="text" class="menuParent">TEXT<input type="checkbox" class="inMenu">
+    <ul class="submenu">
+      <li data-component="lorem-ipsum"><input type="checkbox"><a>LOREM IPSUM</a></li>
+      <li data-component="random-strings"><input type="checkbox"><a>RANDOM STRINGS</a></li>
+      <li data-component="text-analyses"><input type="checkbox"><a>TEXT ANALYSES</a></li>
+      <!-- <li data-component="regular-expression"><input type="checkbox"><a>REGULAR EXPRESSION</a></li> -->
+      <!-- <li data-component="diff-text"><input type="checkbox"><a>DIFF TEXT</a></li> -->
+      <!-- <li data-component="text-beautify"><input type="checkbox"><a>TEXT BEAUTIFY</a></li> -->
+      <!-- <li data-component="scratch-pad"><input type="checkbox"><a>SCRATCH PAD</a></li> -->
+    </ul>
+  </li>
+  <li id="numbers" class="menuParent">NUMBERS<input type="checkbox" class="inMenu">
+    <ul class="submenu">
+      <li data-component="digit-generate"><input type="checkbox"><a>DIGIT GENERATE</a></li>
+      <li data-component="random-numbers"><input type="checkbox"><a>RANDOM NUMBERS</a></li>
+      <li data-component="base-converter"><input type="checkbox"><a>BASE CONVERTER</a></li>
+      <!-- <li data-component="graph-pad"><input type="checkbox"><a>GRAPH PAD</a></li> -->
+    </ul>
+  </li>
+  <li id="graphics" class="menuParent">GRAPHICS<input type="checkbox" class="inMenu">
+    <ul class="submenu">
+        <li data-component="color-picker"><input type="checkbox"><a>COLOR PICKER</a></li>
+        <li data-component="color-palette"><input type="checkbox"><a>COLOR PALETTE</a></li>
+        <li data-component="random-color"><input type="checkbox"><a>RANDOM COLOR</a></li>
+        <li data-component="gradient-maker"><input type="checkbox"><a>GRADIENT MAKER</a></li>
+        <!-- <li data-component="vector-edit"><input type="checkbox"><a>VECTOR EDIT</a></li> -->
+    </ul>
+  </li>
+  <li id="dateTime" class="menuParent">DATE &amp; TIME<input type="checkbox" class="inMenu">
+    <ul class="submenu">
+        <li data-component="date-converter"><input type="checkbox"><a>DATE CONVERTER</a></li>
+        <li data-component="time-diff"><input type="checkbox"><a>TIME DIFF</a></li>
+        <li data-component="stop-watch"><input type="checkbox"><a>STOPWATCH</a></li>
+    </ul>
+  </li>
+  <!-- <li id="benchmarks" class="menuParent">BENCHMARKS<input type="checkbox" class="inMenu">
+    <ul class="submenu">
+    </ul>
+  </li> -->
+</ul>

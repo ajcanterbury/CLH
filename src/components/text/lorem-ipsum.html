@@ -1,0 +1,57 @@
+<template>
+  <style>
+    input {
+      margin-right:0.3rem;
+      background: var(--fainter-color);
+      border: none;
+      padding: 0.2rem 0.4rem;
+      font-size:1.1rem;
+      color: #dee0f7;
+    }
+    input[type="number"] {
+      width: 4.2rem;
+    }
+    select {
+      -webkit-appearance:none;
+      -moz-appearance:none;
+      appearance:none;
+      background: var(--fainter-color);
+      border: none;
+      border-radius: 0;
+      padding: 0.2rem 0.4rem;
+      font-size:1.1rem;
+      color: #dee0f7;
+    }
+    button {
+      background: var(--fainter-color);
+      float: right;
+      font-size: 1.1rem;
+      color: #dee0f7;
+      padding: 0.11rem 0.6rem;
+      border: 0.01rem solid var(--secondary-color);
+      border-radius: 0;
+    }
+    div {
+      margin-top:1rem;
+      padding: 0.5rem;
+      min-width: 15rem;
+      max-width: 100%;
+      height: calc(100% - 6.2rem);
+      background: #dee0f7;
+      color: #202020;
+      overflow-y: auto;
+      -webkit-user-select: text;
+      -moz-user-select: text;
+      user-select: text;
+    }
+  </style>
+  <input type="number" min="1" max="10000" value="20"/>
+  <select>
+    <option value="w">words</option>
+    <option value="b">bytes</option>
+    <option value="p">paragraphs</option>
+    <option value="l">lists</option>
+  </select>
+  <button>copy</button>
+  <div></div>
+</template>

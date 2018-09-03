@@ -1,0 +1,141 @@
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
+
+/* :root css variables */
+:root {
+  --base-color: #1d1919;
+  --base-dark-color: #1b1212;
+  --block-color: #24242b;
+  --over-color: #3a3838;
+  --primary-color: #0096c8;
+  --secondary-color: #005660;
+  --highlight-color: #57eeff;
+  --faint-color: #387286; 
+  --fainter-color: #2c444c;
+  --contrast-color: #f00c11;
+  --highlight-contrast: #ff683a;
+  --faint-contrast: #4d0204;
+}
+
+html {
+  box-sizing: border-box;
+  line-height: 1.15; /* 1 */
+	-webkit-text-size-adjust: 100%; /* 2 */
+}
+html, body {
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 100%;
+  color: var(--primary-color);
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: var(--base-color);
+  width: 100%;
+  border: 0;
+  padding: 0;
+}
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(12, 12, 12, 0.8);
+  z-index: 100;
+}
+#clhMain {
+  margin: 2rem 0.5rem 0;
+  padding: 0;
+  list-style: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  display: flex;
+	flex-wrap: wrap;
+	height: min-content;
+}
+
+/*** clh component wrapper ***/
+c-wrapper {
+  display: none;
+  position: relative;
+  box-sizing: border-box;
+  width: 0;
+  max-width: calc(50% - 1rem);
+  margin: 0.5rem;
+  padding: 0.5rem;
+  background: var(--block-color);
+  overflow: auto;
+  transform: rotateY(90deg);
+}
+c-wrapper.show {
+  display: inline-block;
+  transform: rotateY(0deg);
+  min-width: 23rem;
+  width: auto;
+  animation: clhShow .8s ease-in-out;
+}
+c-wrapper.hide {
+  min-width: 0;
+  width: 0;
+  display: none;
+  animation: clhHide 1s ease-in-out;
+}
+c-wrapper h3 {
+  position: relative;
+  top: -1.3rem;
+  margin-bottom: 0;
+  font-weight: normal;
+}
+c-wrapper .wrapControls {
+  position: absolute;
+  top: 0.2rem;
+  right: 0.2rem;
+  z-index: 10;
+}
+c-wrapper .controlComp {
+  border: none;
+  background: none;
+  font-size: 1rem;
+  color: var(--faint-color);
+}
+c-wrapper .controlComp:hover {
+  color: var(--primary-color);
+  text-shadow: 0 0 0.8rem var(--highlight-color);
+}
+c-wrapper .controlComp:active, c-wrapper .controlComp:focus {
+  outline: none;
+}
+c-wrapper .resizeComp {
+  transform: rotate(135deg);
+  font-size: 0.8rem;
+  color: rgb(136, 136, 136);
+}
+c-wrapper button {
+  border: 0.01rem solid var(--highlight-color);
+}
+@keyframes clhShow {
+  0% {
+    display: none;
+    width: 0;
+    transform: rotateY(90deg);
+  }
+  1% {
+    display: inline-block;
+    min-width: 16rem;
+    width: auto;
+  }
+  100% {
+    transform: rotateY(0deg);
+  }
+}
+
+@media only screen and (max-width: 900px) {
+  c-wrapper {
+    max-width: calc(100% - 1rem);
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  c-wrapper.show {
+    min-width: 22rem;
+  }
+}

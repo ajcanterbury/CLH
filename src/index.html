@@ -1,0 +1,54 @@
+<!doctype html>
+<!--
+Copyright (c) 2018 Anthony Canterbury. All rights reserved.
+This code may only be used under the BSD license.
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Coder's Little Helper app">
+  <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="icon" href="/favicon.ico">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="stylesheet" href="/clh.css">
+  <script type="module" src="/clh-loader.js" defer></script>
+  <!-- remove on build -->
+  <script type="module" src="/reload/reload.js" defer></script>
+  <!-- remove done -->
+  <!-- browser polyfills if you really want to support those browsers
+  <script src="/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script> 
+  -->
+  <title>CLH &gt;</title>
+</head>
+<body>
+  <header>
+    <clh-menu state="no"></clh-menu>
+  </header> 
+  <main id="clhMain">
+  </main>
+  <template id="c-wrapper">
+    <c-wrapper>
+      <h3 class="wrapHead"></h3>
+      <div class="wrapControls">
+        <button class="controlComp resizeComp" title="resize">&lt; &gt;</button>
+        <button class="controlComp removeComp" title="delete">x</button>
+      </div>
+    </c-wrapper>
+  </template>
+  <script>
+    if('serviceWorker' in navigator) {
+      navigator.serviceWorker
+        .register('/sw.js')
+        .then(function() { console.log('Congratulations you\'ve contracted a service worker'); });
+    }
+  </script>
+  <noscript>
+    <h2>Nothing Exists without JavaScript!</h2>
+  </noscript>
+</body>
+</html>

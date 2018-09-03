@@ -1,0 +1,27 @@
+{
+  "name": "clh",
+  "description": "Coder's Little Helper",
+  "homepage": "https://coderslittlehelper.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/npm/cli.git"
+  },
+  "version": "0.1.0alpha",
+  "main": "index.html",
+  "author": "Anthony J Canterbury",
+  "license": "MIT",
+  "dependencies": {
+    "@webcomponents/webcomponentsjs": "^2.0.2",
+    "express": "^4.16.3",
+    "html-minifier": "^3.5.20",
+    "ncp": "^2.0.0",
+    "reload": "^2.3.1",
+    "supervisor": "^0.12.0",
+    "uglify-es": "^3.3.9",
+    "uglifycss": "0.0.29"
+  },
+  "scripts": {
+    "start": "./node_modules/.bin/supervisor -k -e html -i .git/,node_modules/ -- server.js",
+    "build": "node builder.js"
+  }
+}

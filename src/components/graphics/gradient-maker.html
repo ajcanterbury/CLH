@@ -1,0 +1,157 @@
+<template>
+  <style>
+    input {
+      margin-right:0.3rem;
+      background: var(--fainter-color);
+      border: none;
+      border-radius: 0;
+      padding: 0.2rem 0.4rem;
+      font-size:1.1rem;
+      color: #dee0f7;
+    }
+    input[type="number"] {
+      width: 4.2rem;
+    }
+    span {
+      font-size: 1.3em; 
+      position: relative;
+      z-index: 2;
+      color: #eee;
+      margin-left: -2rem;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      user-select: none;
+    }
+    select {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      margin-right: 0.3rem;
+      appearance: none;
+      background: var(--fainter-color);
+      border: none;
+      border-radius: 0;
+      padding: 0.2rem 0.4rem;
+      font-size: 1.1rem;
+      color: #dee0f7;
+    }
+    button {
+      background: var(--fainter-color);
+      float: right;
+      font-size: 1.1rem;
+      color: #dee0f7;
+      padding: 0.11rem 0.6rem;
+      border: 0.01rem solid var(--secondary-color);
+      border-radius: 0;
+    }
+    #gradDisplay {
+      width: 100%;
+      box-sizing: border-box;
+      height: 4rem;
+      margin: 1rem 0 1.5rem 0;
+      background: linear-gradient(45deg, red, blue);
+    }
+    #gradSlider {
+      position: absolute;
+      box-sizing: border-box;
+      width: calc(100% - 1.1rem);
+      height: 6.5rem;
+      left: 0;
+      top: 4.6rem;
+    }
+    .colorSlider {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 1rem;
+    }
+    .colorSlider hr {
+      transform: rotate(90deg);
+      width: 4.5rem;
+      position: relative;
+      left: -1.8rem;
+      top: 2.7rem;
+      background: rgb(120 , 122, 122);
+    }
+    .colorSlider div {
+      width: 1rem;
+      height: 1rem;
+      border: 0.01rem solid rgb(120 , 122, 122);
+      background: red;
+      position: absolute;
+      bottom: 0;
+      cursor: -moz-grab;
+      cursor: -webkit-grab;
+    }
+    #dragOver {
+      display: none;
+      width: 100%;
+      height: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 50;
+      cursor: -moz-grabbing;
+      cursor: -webkit-grabbing;
+    }
+    #colorPicker {
+      position: relative;
+      display: none;
+      z-index: 51;
+    }
+    #circleType {
+      display: none;
+    }
+    #ellipseType {
+      display: none;
+    }
+    #output {
+        margin-top: 1rem;
+        padding: 0.5rem;
+        min-width: 18rem;
+        width: 25rem;
+        font-size: 0.9em;
+        overflow-y: auto;
+        -webkit-user-select: text;
+        -moz-user-select: text;
+        user-select: text;
+      }
+  </style>
+  <button id="gradAdd">+ add</button>
+  <select id="gradType">
+    <option value="linear">Linear</option>
+    <option value="circle">Radial - Circle</option>
+    <option value="ellipse">Radial - Ellipse</option>
+  </select>
+  <input type="number" id="gradDirection" min="-180" max="180" value="45" /><span>&deg;</span>
+  <select id="circleType">
+    <option value="">normal</option>
+    <option value="circle at center,">center</option>
+    <option value="closest-side,">side</option>
+    <option value="closest-corner,">corner</option>
+  </select>
+  <select id="ellipseType">
+      <option value="ellipse,">normal</option>
+      <option value="ellipse at top,">at top</option>
+      <option value="ellipse at bottom,">bottom</option>
+    </select>
+  <div id="gradDisplay"></div>
+  <div id="gradSlider">
+      <div id="dragOver"></div>
+      <div class="colorSlider" id="color-1">
+        <hr/>
+        <div style="background:#FF0000;"></div>
+      </div>
+      <div class="colorSlider" id="color-2" style="left: 100%;">
+        <hr/>
+        <div style="background:#0000FF;"></div>
+      </div>
+  </div>
+  <div id="colorPicker">
+    <color-picker hex="FFFFFF"></color-picker>
+    <br />
+    <input type="number" id="opacity" min="0" max="100" value="100"/> % opacity
+    <button id="gradDelete">- delete</button>
+  </div>
+  <div id="output">linear-gradient(45deg, rgb(255, 0, 0) 0%, rgb(0, 0, 255) 100%)</div>
+</template>

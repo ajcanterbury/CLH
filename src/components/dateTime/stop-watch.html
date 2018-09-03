@@ -1,0 +1,83 @@
+<template>
+  <style>
+    :host {
+      font-family: "Share Tech Mono", monospace;
+    }
+    .stopwatch {
+      text-align: center;
+      border: 1px solid fuchsia;
+      padding: 2rem;
+      box-shadow: 0 0 10px purple;
+      position: relative;
+    }
+    .time {
+      font-size: 3em;
+      color: cyan;
+      text-shadow: 0 0 10px teal;
+      margin-bottom: 0.5em;
+    }
+
+    button {
+      cursor: pointer;
+      border: 1px solid cyan;
+      background: 0;
+      color: cyan;
+      padding: 0.5em 1em;
+      text-transform: uppercase;
+      margin: 0 0.5em;
+      transition: all 0.3s;
+    }
+    button.clear {
+      color: orange;
+      border: 1px solid orange;
+      position: relative;
+      margin: auto;
+    }
+    button.clear:after {
+      content: "";
+      height: 1px;
+      width: 200px;
+      position: absolute;
+      background: orange;
+      top: -1rem;
+      left: calc(50% - 100px);
+      box-shadow: 0 0 5px orange;
+    }
+    button.clear:hover {
+      background: rgba(255, 28, 128, 0.5);
+      box-shadow: 0 0 10px rgba(255, 28, 128, 0.5);
+    }
+    button:hover {
+      background: rgba(0, 128, 128, 0.5);
+      box-shadow: 0 0 10px rgba(0, 128, 128, 0.5);
+    }
+
+    .lapsBox {
+      text-align: center;
+    }
+    .laps {
+      color: orange;
+      text-shadow: 0 0 5px #ff8080;
+      margin: 2rem auto 2rem auto;
+      padding: 0;
+    }
+    .laps li {
+      list-style-type: none;
+      font-size: 1.2em;
+    }
+  </style>
+  <div class="stopwatch">
+    <div class="time">00:00:00:00</div>
+    <button class="start">Start</button>
+    <button class="pause">Pause</button>
+    <button class="reset">Reset</button>
+    <button class="lap">Lap</button>
+  </div>
+    
+  <div class="lapsBox">
+    <ul class="laps">
+  
+    </ul>
+    <button class="clear">Clear Laps</button>
+  </div>
+</template>

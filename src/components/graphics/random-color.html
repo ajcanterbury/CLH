@@ -1,0 +1,95 @@
+<template>
+  <style>
+    input {
+      margin-right:0.3rem;
+      background: var(--fainter-color);
+      border: none;
+      border-radius: 0;
+      padding: 0.2rem 0.4rem;
+      font-size:1.1rem;
+      color: #dee0f7;
+    }
+    input[type="number"] {
+      width: 4.2rem;
+    }
+    select {
+      -webkit-appearance:none;
+      -moz-appearance:none;
+      margin-right:0.3rem;
+      appearance:none;
+      background: var(--fainter-color);
+      border: none;
+      border-radius: 0;
+      padding: 0.2rem 0.4rem;
+      font-size:1.1rem;
+      color: #dee0f7;
+    }
+    span {
+      margin-right: 1rem;
+    }
+    button {
+      background: var(--fainter-color);
+      float: right;
+      font-size: 1.1rem;
+      color: #dee0f7;
+      padding: 0.11rem 0.6rem;
+    }
+    #output {
+      margin-top:1rem;
+      padding: 0.5rem;
+      min-width: 18rem;
+      max-width: 100%;
+      overflow-y: auto;
+      -webkit-user-select: text;
+      -moz-user-select: text;
+      user-select: text;
+      word-wrap: break-word;
+    }
+    #output:focus {
+      outline: none;
+    }
+    #hueMod {
+      margin-top: 0.5rem;
+      display: none;
+    }
+    #hueHex {
+      width: 6rem;
+    }
+    .colorBlock {
+      display: inline-block;
+      margin: 0 0.5rem 0.5rem;
+      text-align: center;
+    }
+    .color {
+      width: 3.5rem;
+      height: 3.5rem;
+      border-radius: 4rem;
+      margin-bottom: 0.2rem;
+    }
+  </style>
+  <input id="count" type="number" min="1" max="100" value="3"/>
+  <select id="luminosity">
+    <option value="r">random</option>
+    <option value="l">light</option>
+    <option value="b">bright</option>
+    <option value="d">dark</option>
+  </select>
+  hued:
+  <select id="hue">
+      <option>random</option>
+      <option>red</option>
+      <option>orange</option>
+      <option>yellow</option>
+      <option>green</option>
+      <option>blue</option>
+      <option>purple</option>
+      <option>pink</option>
+      <option>monochrome</option>
+      <option>custom</option>
+    </select>
+  <div id="hueMod">
+    # 
+    <input id="hueHex" maxlength="8" type="text"/>
+  </div>
+  <div id="output"></div>
+</template>

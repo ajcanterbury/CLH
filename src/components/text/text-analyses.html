@@ -1,0 +1,59 @@
+<template>
+  <style>
+    :host {
+      display: inline-block;
+      width: 100%;
+      height: calc(100% - 3rem);
+      box-sizing: border-box;
+    }
+    textarea {
+      padding: 0.5rem;
+      min-width: 20rem;
+      width: 100%;
+      box-sizing: border-box;
+      max-width: 100%;
+      font-size: 0.9rem;
+      height: 10rem;
+      background: #dee0f7;
+      color: #202020;
+      overflow-y: auto;
+    }
+    ul {
+      list-style-type: none;
+      padding-left: 0.2rem;
+      text-align: justify;
+      text-justify: inter-word;
+      columns: 2;
+      margin: 0.2rem;
+    }
+    span.justify {
+      display: inline-block;
+      width: 5rem;
+    }
+    div {
+      overflow-y: auto;
+      width: 100%;
+      min-width: 1rem;
+      resize: both;
+    }
+    div span:hover {
+      background:#efefef;
+    }
+    div span:nth-child(odd){
+      color: var(--contrast-color);
+    }
+  </style>
+  <textarea contenteditable="true"></textarea>
+  <ul>
+    <li><span class="justify">characters </span>= <span id="chars">0</span></li>
+    <li><span class="justify">words </span>= <span id="words">0</span></li>
+    <li><span class="justify">spaces </span>= <span id="space">0</span></li>
+    <li><span class="justify">shortest </span>= <span id="short">0</span></li>
+    <li><span class="justify">longest </span>= <span id="long">0</span></li>
+    <li><span class="justify">special </span>= <span id="spec">0</span></li>
+    <li><span class="justify">sentences </span>= <span id="sent">0</span></li>
+    <li><span class="justify">paragraphs </span>= <span id="para">0</span></li>
+  </ul>
+  <span id="hash"></span>
+  <div id="freq"></div>
+</template>
