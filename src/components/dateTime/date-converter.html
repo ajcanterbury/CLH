@@ -28,6 +28,14 @@
       -moz-user-select: text;
       user-select: text;
     }
+    @media only screen and (max-width: 400px) {
+      input[type="time"] {
+        min-width: 7rem;
+      }
+      input[type="date"] {
+        width: 8rem;
+      }
+    }
   </style>
   <span>Std: </span>
   <input id="standardTime" type="time"/>

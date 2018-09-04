@@ -8,7 +8,7 @@
   "start_url": ".",
   "display": "standalone",
   "background_color": "#1d1919",
-  "theme_color":"rgba(12, 12, 12, 0.8)",
+  "theme_color":"#100e0e",
   "icons": [{
     "src": "./img/icon-144x144.png",
     "sizes": "144x144",

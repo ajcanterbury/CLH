@@ -141,6 +141,12 @@ c-wrapper button {
 }
 
 @media only screen and (max-width: 400px) {
+  #clhMain {
+    margin: 2rem 0.1rem 0;
+  }
+  c-wrapper {
+    margin: 0.5rem 0.1rem;
+  }
   c-wrapper.show {
     min-width: 22rem;
   }
