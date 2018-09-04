@@ -7,7 +7,7 @@ CLH is a PWA platform for running various web components (helpers) for working o
 
 ## Getting Started
 
-You can immediately use the app at [coderslittlehelper.com](https://www.coderslittlehelper.com) or you can grab the code and add your own web components.
+You can immediately use the app at [coderslittlehelper.com](http://www.coderslittlehelper.com) or you can grab the code and add your own web components.
 
 ### Prerequisites
 
