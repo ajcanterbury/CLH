@@ -96,11 +96,14 @@ customElements.define('text-analyses', class extends HTMLElement {
     let spans = '';
     let wordSize;
     const minWordSize = 0.8;
+    const maxWordSize = 6;
 
     for(let i=0;i<listLen;i++) {
-      wordSize = list[i][1] / 1.2;
+      wordSize = list[i][1] / 1.9;
       if(wordSize < minWordSize) {
         wordSize = minWordSize;
+      } else if(wordSize > maxWordSize) {
+        wordSize = maxWordSize;
       }
       spans += '<span style="font-size:'+ wordSize + 'rem;" title="' + list[i][1]
          + '">' + list[i][0] + ' </span>';
@@ -111,8 +114,8 @@ customElements.define('text-analyses', class extends HTMLElement {
   }
 
   resizeArea() {
-    this.freq.style.width = this.tarea.offsetWidth - 10 + 'px';
-    this.freq.style.height =  this.offsetHeight - 10 - this.tarea.offsetHeight + 'px';
+    this.freq.style.width = this.tarea.offsetWidth - 2 + 'px';
+    this.freq.style.height =  this.offsetHeight + 10 - this.tarea.offsetHeight + 'px';
   }
 
 });

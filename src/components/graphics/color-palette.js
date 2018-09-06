@@ -5,6 +5,8 @@
 (function(){
   const cPicker = document.getElementById('colorPalette');
   document.getElementById('color-palette-wrap').style.maxWidth = '100%';
+  // disable standard resizing
+  document.getElementById('color-palette-wrap').querySelector('.resizeComp').style.display = 'none';
   // fetch the files outside of the iframe due to a Chrome Service Worker issue
   fetch('/components/graphics/color-palette.css',{method:'GET'})
   .then(response => {

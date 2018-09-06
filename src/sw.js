@@ -1,5 +1,5 @@
 /* service worker file */
-const CACHE_ID = 'v1';
+const CACHE_ID = 'v3';
 let FILES = [
   '/',
   '/index.html',
