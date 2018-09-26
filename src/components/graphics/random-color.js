@@ -32,7 +32,7 @@ customElements.define('random-color', class extends HTMLElement {
     this.generate();
   }
 
-  // generate lorem ipsum
+  // generate random colors
   generate() {
     let colors;
     let out = '';

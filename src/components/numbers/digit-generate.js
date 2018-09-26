@@ -31,7 +31,7 @@ customElements.define('digit-generate', class extends HTMLElement {
     this.generate();
   }
 
-  // generate lorem ipsum
+  // generate various digits
   generate() {
     const count = this.input.value;
     const type = this.select.value;

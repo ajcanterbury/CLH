@@ -36,7 +36,7 @@ customElements.define('time-diff', class extends HTMLElement {
     this.hours.addEventListener('input', () => {this.generate('diff')});
   }
 
-  // generate lorem ipsum
+  // generate time differnces
   generate(type) {
     const dateFrom = new Date(this.sDate.value + 'T' + this.sTime.value);
     if(type === 'time') {

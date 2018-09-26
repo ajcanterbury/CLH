@@ -37,7 +37,7 @@ customElements.define('random-strings', class extends HTMLElement {
     this.generate();
   }
 
-  // generate lorem ipsum
+  // generate random strings
   generate() {
     const count = this.length.value;
     const type = this.select.value;

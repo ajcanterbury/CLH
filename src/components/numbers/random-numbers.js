@@ -33,7 +33,7 @@ customElements.define('random-numbers', class extends HTMLElement {
     this.generate();
   }
 
-  // generate lorem ipsum
+  // generate random numbers
   generate() {
     const count = parseFloat(this.length.value);
     const type = this.select.value;

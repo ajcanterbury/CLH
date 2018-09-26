@@ -4,14 +4,14 @@
   "homepage": "https://coderslittlehelper.com",
   "repository": {
     "type": "git",
-    "url": "https://github.com/npm/cli.git"
+    "url": "https://github.com/ajcanterbury/CLH.git"
   },
   "version": "0.1.0alpha",
   "main": "index.html",
   "author": "Anthony J Canterbury",
   "license": "MIT",
   "dependencies": {
-    "@webcomponents/webcomponentsjs": "^2.0.2",
+    "@webcomponents/webcomponentsjs": "^2.1.3",
     "express": "^4.16.3",
     "html-minifier": "^3.5.20",
     "ncp": "^2.0.0",
