@@ -13,11 +13,7 @@ You can immediately use the app at [coderslittlehelper.com](https://www.codersli
 
 You will need:
 * Node.JS v8+
-* A browser that supports Web Components (so no IE, Edge, or older browser). For now Firefox users will need to enable the pollyfill in src/index.html or set true about:config:
-```
-dom.webcomponents.customelements.enabled
-dom.webcomponents.shadowdom.enabled
-```
+* A browser that supports Web Components (so no IE, Edge, or older browser). Firefox users must be at least version 63.0.
 
 ### Installing & Running
 
