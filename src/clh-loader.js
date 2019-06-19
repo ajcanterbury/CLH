@@ -1,53 +1,9 @@
 // load html and js file for components without html-import
-export function loadTemplate(customElem, callback) {
-  fetch(customElem+'.html',{method:'GET'})
-  .then((response) => {
-    // if 404 it may be just a JS web component (just ignore console error)
-    if(response.status === 404) {
-      const elemScript = document.createElement('script');
-      elemScript.setAttribute('src',customElem+'.js');
-      elemScript.setAttribute('type','module');
-      elemScript.setAttribute('defer','');
-      document.head.appendChild(elemScript);
-    } else {
-      return response.text();
-    }
-  })
-  .then((html) => {
-    let category = '';
-    
-    // parse custom element file name
-    if(customElem.includes('/')) {
-      // overload indexOf for second subdirectory category
-      category = customElem.substring(0, customElem.
-        indexOf('/', customElem.indexOf('/')+1)+1);
-      customElem = customElem.substring(customElem.
-        indexOf('/', customElem.indexOf('/')+1)+1);
-    }
-
-    // add html to custom element placeholder within doc main
-    let placeholder = document.querySelector(customElem);
-    if(placeholder) {
-      placeholder.innerHTML = html;
-    } else if(document.getElementById(customElem+'-wrap')) {
-      placeholder = document.createElement(customElem);
-      placeholder.innerHTML = html;
-      document.getElementById(customElem).appendChild(placeholder)
-    }
-
-    // load script if there is no script in the html
-    if(!placeholder.querySelector('script')) {
-      const elemScript = document.createElement('script');
-      elemScript.setAttribute('src',category+customElem+'.js');
-      elemScript.setAttribute('type','module');
-      elemScript.setAttribute('defer','');
-      document.head.appendChild(elemScript);
-    }
-
-    // run further callbacks if present
-    if(callback !== undefined) callback();
-  })
-  .catch(function (error) {
+export const loadTemplate = async (customElem, callback) => {
+  let response;
+  try {
+    response = await fetch(customElem+'.html',{method:'GET'});
+  } catch(error) {
     // when offline try to find the js if html failed
     if(error.message.includes('fetch')) {
       if(document.querySelector('script[src="'+customElem+'.js"')) return;
@@ -59,28 +15,64 @@ export function loadTemplate(customElem, callback) {
     } else {
       console.error(error);
     }
-  });
-}
+  }
+  
+  // if 404 it may be just a JS web component (just ignore console error)
+  if(response.status === 404) {
+    const elemScript = document.createElement('script');
+    elemScript.setAttribute('src',customElem+'.js');
+    elemScript.setAttribute('type','module');
+    elemScript.setAttribute('defer','');
+    document.head.appendChild(elemScript);
+    return;
+  }
+
+  const html = await response.text();
+  
+  let category = '';
+  
+  // parse custom element file name
+  if(customElem.includes('/')) {
+    // overload indexOf for second subdirectory category
+    category = customElem.substring(0, customElem.
+      indexOf('/', customElem.indexOf('/')+1)+1);
+    customElem = customElem.substring(customElem.
+      indexOf('/', customElem.indexOf('/')+1)+1);
+  }
+
+  // add html to custom element placeholder within doc main
+  let placeholder = document.querySelector(customElem);
+  if(placeholder) {
+    placeholder.innerHTML = html;
+  } else if(document.getElementById(customElem+'-wrap')) {
+    placeholder = document.createElement(customElem);
+    placeholder.innerHTML = html;
+    document.getElementById(customElem).appendChild(placeholder)
+  }
+
+  // load script if there is no script in the html
+  if(!placeholder.querySelector('script')) {
+    const elemScript = document.createElement('script');
+    elemScript.setAttribute('src',category+customElem+'.js');
+    elemScript.setAttribute('type','module');
+    elemScript.setAttribute('defer','');
+    document.head.appendChild(elemScript);
+  }
+
+  // run further callbacks if present
+  if(callback !== undefined) callback();
+};
 
 // indexedDB for persistant state of components
-export var clhData = window.indexedDB.open('ClhData', 1);
-clhData.onupgradeneeded = function (ev) {
+export let clhData = window.indexedDB.open('ClhData', 1);
+clhData.onupgradeneeded = (ev) => {
   console.log('upgraded db')
   clhData = ev.target.result; 
   clhData.createObjectStore('activeHelpers', {keyPath:'id'});
 }
 
-// load menu at start, then load stored components
-clhData.onsuccess = function(ev) { 
-  // check initial based on menu existing
-  if(!document.getElementById('clhLogo')) {
-    clhData = ev.target.result;   
-    loadTemplate('/menu/clh-menu', checkHelpers);
-  }
-}
-
 // check state of helper from indexedDB
-function checkHelpers() {
+const checkHelpers = () => {
   const objectStore = clhData.transaction('activeHelpers').objectStore('activeHelpers');
   objectStore.openCursor().onsuccess = function(ev) {
     const cursor = ev.target.result;
@@ -90,7 +82,16 @@ function checkHelpers() {
       cursor.continue();
     }
   }
-}
+};
+
+// load menu at start, then load stored components
+clhData.onsuccess = (ev) => { 
+  // check initial based on menu existing
+  if(!document.getElementById('clhLogo')) {
+    clhData = ev.target.result;   
+    loadTemplate('/menu/clh-menu', checkHelpers);
+  }
+};
 
 // wrapper component
 class clhWrapper extends HTMLElement {
@@ -135,7 +136,7 @@ class clhWrapper extends HTMLElement {
 }
 
 // create component wrapper
-export function addComponent(category, component) {
+export const addComponent = (category, component) => {
   // if it is just hidden, it just gets revealed
   const compExists = document.getElementById(component+'-wrap');
 
@@ -171,7 +172,7 @@ export function addComponent(category, component) {
 }
 
 // delete component with wrapper, actually this just hides it
-export function deleteComponent(category, component) {
+export const deleteComponent = (category, component) => {
   document.getElementById(component).classList.remove('show');
   component = component.replace('-wrap','');
   if(document.head.querySelector(`script[src="components/${category}/${component}.js"]`)) {

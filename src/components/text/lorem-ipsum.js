@@ -69,10 +69,9 @@ customElements.define('lorem-ipsum', class extends HTMLElement {
 
     switch (type) {
       case 'p':
-        let pLen = 15;
         for(let i = 0; i < count; i++) {
-            pLen = this.random(15, 45);
-            lorem += '<p>' + this.wordPunc(pLen) + '</p>';
+          const pLen = this.random(15, 45);
+          lorem += '<p>' + this.wordPunc(pLen) + '</p>';
         }
         break;
       case 'b':
@@ -109,12 +108,11 @@ customElements.define('lorem-ipsum', class extends HTMLElement {
     const puncsLen = puncs.length;
     const wordsLen = this.words.length;
     let sentences = 'Lorem ipsum ';
-    let sentence = '';
     let lastPunc = 0;
 
     // add word and possibly punctuation
     for(let i=2;i<count;i++){
-      sentence = this.words[this.random(0,wordsLen)];
+      let sentence = this.words[this.random(0,wordsLen)];
       if(i % 4) {
         // check to capitalize after punctuation
         if(lastPunc > 4 && sentence !== undefined) {
