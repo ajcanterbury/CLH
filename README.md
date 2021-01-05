@@ -13,7 +13,7 @@ You can immediately use the app at [coderslittlehelper.com](https://www.codersli
 
 You will need:
 * Node.JS v8+
-* A browser that supports Web Components (so no IE, Edge, or older browser). Firefox users must be at least version 63.0.
+* A browser that supports Web Components (so no IE, or older browser).
 
 ### Installing & Running
 
