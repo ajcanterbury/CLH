@@ -1,12 +1,9 @@
 customElements.define('digit-generate', class extends HTMLElement {
   constructor() {
     super();
-    const shadow = this.attachShadow({mode: 'open'});
+    const shadow = this.attachShadow({ mode: 'open' });
     const template = this.querySelector('template');
 
-    // little bit of webcomponent pollyfill if using web-components.js
-    //ShadyCSS.prepareTemplate(template, customElem);
-    
     shadow.appendChild(document.importNode(template.content, true));
 
     // bind this to functions
@@ -44,23 +41,25 @@ customElements.define('digit-generate', class extends HTMLElement {
 
     switch (type) {
       case 'p':
-        this.digitWorker.postMessage({'cmd': 'prime', 'limit': count});
+        this.digitWorker.postMessage({ cmd: 'prime', limit: count });
         break;
       case 'f':
-        this.digitWorker.postMessage({'cmd': 'fib', 'limit': count});
+        this.digitWorker.postMessage({ cmd: 'fib', limit: count });
         break;
       case 'pi':
-        this.digitWorker.postMessage({'cmd': 'pi', 'limit': count});
+        this.digitWorker.postMessage({ cmd: 'pi', limit: count });
         break;
       case 'e':
-        this.digitWorker.postMessage({'cmd': 'euler', 'limit': count});
+        this.digitWorker.postMessage({ cmd : 'euler', limit: count });
         break;
       case 'ph':
-        this.digitWorker.postMessage({'cmd': 'phi', 'limit': count});
+        this.digitWorker.postMessage({ cmd: 'phi', limit: count });
         break;
       case '2':
-        this.digitWorker.postMessage({'cmd': 'sq2', 'limit': count});
+        this.digitWorker.postMessage({ cmd: 'sq2', limit: count });
         break;
+      default:
+        // nothing
     }
   }
 
@@ -71,12 +70,11 @@ customElements.define('digit-generate', class extends HTMLElement {
 
   // copy output text
   copy() {
-    let range = document.createRange();
-    let sel = window.getSelection();
+    const range = document.createRange();
+    const sel = window.getSelection();
     range.selectNodeContents(this.output);
     sel.removeAllRanges();
     sel.addRange(range);
     document.execCommand('copy');
   }
-
 });

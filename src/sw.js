@@ -1,6 +1,6 @@
 /* service worker file */
-const CACHE_ID = 'v3';
-let FILES = [
+const CACHE_ID = 'v5';
+const FILES = [
   '/',
   '/index.html',
   'https://fonts.googleapis.com/css?family=Source+Sans+Pro',
@@ -36,17 +36,12 @@ const COMPONENTS = [
   '/components/dateTime/stop-watch.js',
   '/components/dateTime/time-diff.html',
   '/components/dateTime/time-diff.js',
-  '/components/graphics/color-palette.css',
-  '/components/graphics/color-palette.html',
-  '/components/graphics/color-palette.js',
   '/components/graphics/color-picker.js',
   '/components/graphics/gradient-maker.html',
   '/components/graphics/gradient-maker.js',
-  '/components/graphics/palette.js',
+  '/components/graphics/random-color-lib.js',
   '/components/graphics/random-color.html',
   '/components/graphics/random-color.js',
-  '/components/graphics/randomColor.js',
-  '/components/graphics/UIcolorPicker.js',
   '/components/numbers/base-converter.html',
   '/components/numbers/base-converter.js',
   '/components/numbers/decimal.js',
@@ -65,32 +60,30 @@ const COMPONENTS = [
   '/components/text/wordfreq.worker.js'
 ];
 
-FILES.push(...IMAGES);
-FILES.push(...COMPONENTS);
+FILES.push(...IMAGES, ...COMPONENTS);
 
-self.addEventListener('install', installEvent => {
+self.addEventListener('install', (installEvent) => {
   installEvent.waitUntil(
-    caches.open(CACHE_ID).then(cache => cache.addAll(FILES)
-  ));
+    caches.open(CACHE_ID).then((cache) => cache.addAll(FILES))
+  );
 });
 
-addEventListener('activate', activateEvent => {
+addEventListener('activate', (activateEvent) => {
   activateEvent.waitUntil(
-    caches.keys().then(keyList => Promise.all(keyList.map(key => {
+    caches.keys().then((keyList) => Promise.all(keyList.map((key) => {
       if (key !== CACHE_ID) {
         return caches.delete(key);
       }
+
+      return false;
     })))
   );
 });
 
-self.addEventListener('fetch', function(event) {
-  // return the cache 
+self.addEventListener('fetch', (event) => {
+  // return the cache
   event.respondWith(
-    caches.match(event.request).then(function(response) {
-      return response || fetch(event.request);
-    }).catch(function(error){
-      return error;
-    })
+    caches.match(event.request).then((response) => response || fetch(event.request))
+      .catch((error) => error)
   );
 });

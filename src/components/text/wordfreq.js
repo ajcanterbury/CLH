@@ -1,40 +1,33 @@
-/*! wordfreq - Text corpus calculation in Javascript.
+/* eslint-disable prefer-rest-params */
+/* wordfreq - Text corpus calculation in Javascript.
   Author: timdream <http://timc.idv.tw/>
 */
 
-var WordFreq = function WordFreq(options) {
+// worker reference will be put here by init(), reuse
+let worker;
+
+// message queue
+// Note: since Javascript Web Workers itself is a single threaded
+// first-in-first-out event queue, the management here
+// (send the next message only till the current one is processed)
+// seems to be an overkill. This should be written if we are sure of
+// the behavior is reliable.
+let messageQueue = [];
+let message = null;
+
+const WordFreq = function WordFreq(options) {
   // Public API object
-  var wordfreq = {};
+  const wordfreq = {};
 
   // options: here, we only worry about workerUrl
   options = options || {};
   options.workerUrl = options.workerUrl || 'wordfreq.worker.js';
 
-  // worker reference will be put here by init();
-  var worker;
-
-  // message queue
-  // Note: since Javascript Web Workers itself is a single threaded
-  // first-in-first-out event queue, the management here
-  // (send the next message only till the current one is processed)
-  // seems to be an overkill. This should be written if we are sure of
-  // the behavior is reliable.
-  var messageQueue = [];
-  var message = null;
-
   // closed flag means the worker is terminated.
-  var closed = false;
+  let closed = false;
 
-  // add message to queue; if there is no ongoing message,
-  // start sending the message.
-  var addQueue = function addQueue(msg) {
-    messageQueue.push(msg);
-
-    if (!message)
-      sendMessage();
-  };
   // send message to worker
-  var sendMessage = function sendMessage() {
+  const sendMessage = function sendMessage() {
     message = messageQueue.shift();
 
     worker.postMessage({
@@ -47,62 +40,67 @@ var WordFreq = function WordFreq(options) {
     delete message.params;
   };
 
+  // add message to queue; if there is no ongoing message,
+  // start sending the message.
+  const addQueue = function addQueue(msg) {
+    messageQueue.push(msg);
+
+    if (!message) sendMessage();
+  };
+
   // process message received from worker
-  var gotMessage = function gotMessage(evt) {
+  const gotMessage = function gotMessage(evt) {
     // unset message reference first
     // so callback cannot be called twice in stop(),
     // and doing init() in the callback() will not result overwritting
     // message.
-    var callback = message.callback;
+    const callback = message.callback;
     message = null;
 
-    if (callback)
-      callback.call(wordfreq, evt.data);
+    if (callback) callback.call(wordfreq, evt.data);
+
     // Set the message to null, since we have finished processing
-    if (messageQueue.length)
-      sendMessage();
+    if (messageQueue.length) sendMessage();
   };
 
-  var gotError = function gotError(evt) {
+  const gotError = function gotError(evt) {
     // Detach callback with global message reference
     // so it cannot be called twice in stop()
-    var callback = message.callback;
+    const callback = message.callback;
     delete message.callback;
 
-    if (callback)
-      callback.call(wordfreq, evt.data);
+    if (callback) callback.call(wordfreq, evt.data);
+
     // Set the message to null, since we have finished processing
     message = null;
-    if (messageQueue.length)
-      sendMessage();
+    if (messageQueue.length) sendMessage();
   };
 
-  var methods = ['process', 'empty', 'getList', 'getLength', 'getVolume'];
-  methods.forEach(function buildAPI(method) {
+  const methods = ['process', 'empty', 'getList', 'getLength', 'getVolume'];
+  methods.forEach((method) => {
     wordfreq[method] = function addMessage() {
-      if (closed)
-        return;
+      if (closed) return;
 
-      var argLength = arguments.length;
+      let argLength = arguments.length;
 
-      var callback;
+      let callback;
       if (typeof arguments[arguments.length - 1] === 'function') {
         callback = arguments[arguments.length - 1];
         // exclude the callback from being put into params.
         argLength--;
       }
 
-      var params = [];
-      var i = 0;
+      const params = [];
+      let i = 0;
       while (i < argLength) {
         params[i] = arguments[i];
         i++;
       }
 
       addQueue({
-        method: method,
-        params: params,
-        callback: callback
+        method,
+        params,
+        callback
       });
 
       return wordfreq;
@@ -110,7 +108,7 @@ var WordFreq = function WordFreq(options) {
   });
 
   // uninit
-  var uninit = function uninit() {
+  const uninit = function uninit() {
     // set closed flag
     closed = true;
 
@@ -125,8 +123,7 @@ var WordFreq = function WordFreq(options) {
 
   // stop
   wordfreq.stop = function stop(triggerCallbacks) {
-    if (closed)
-      return;
+    if (closed) return;
 
     uninit();
 
@@ -138,20 +135,19 @@ var WordFreq = function WordFreq(options) {
     }
 
     // tell all pending callbacks that the work has stopped
-    if (message && message.callback)
-      message.callback.call(wordfreq);
+    if (message && message.callback) message.callback.call(wordfreq);
+
     message = null;
     while (messageQueue.length) {
-      var msg = messageQueue.shift();
-      if (msg.callback)
-        msg.callback.call(wordfreq);
+      const msg = messageQueue.shift();
+      if (msg.callback) msg.callback.call(wordfreq);
     }
 
     return wordfreq;
   };
 
   // initialize the web workers
-  var init = function init() {
+  const init = function init() {
     // start the worker
     worker = new Worker(options.workerUrl);
 
@@ -167,9 +163,9 @@ var WordFreq = function WordFreq(options) {
   };
 
   // all set, initialize!
-  init();
+  if (!worker) init();
 
   return wordfreq;
-}
+};
 
 export default WordFreq;

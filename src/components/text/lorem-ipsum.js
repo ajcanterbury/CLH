@@ -1,12 +1,9 @@
 customElements.define('lorem-ipsum', class extends HTMLElement {
   constructor() {
     super();
-    const shadow = this.attachShadow({mode: 'open'});
+    const shadow = this.attachShadow({ mode: 'open' });
     const template = this.querySelector('template');
 
-    // little bit of webcomponent pollyfill if using web-components.js
-    //ShadyCSS.prepareTemplate(template, customElem);
-    
     shadow.appendChild(document.importNode(template.content, true));
 
     // giberish words
@@ -15,7 +12,7 @@ customElements.define('lorem-ipsum', class extends HTMLElement {
       'adipiscing', 'elit', 'curabitur', 'vel', 'hendrerit', 'libero',
       'eleifend', 'blandit', 'nunc', 'ornare', 'odio', 'ut',
       'orci', 'gravida', 'imperdiet', 'nullam', 'purus', 'lacinia',
-      'a', 'pretium', 'quis', 'congue', 'praesent', 'sagittis', 
+      'a', 'pretium', 'quis', 'congue', 'praesent', 'sagittis',
       'laoreet', 'auctor', 'mauris', 'non', 'velit', 'eros',
       'dictum', 'proin', 'accumsan', 'sapien', 'nec', 'massa',
       'volutpat', 'venenatis', 'sed', 'eu', 'molestie', 'lacus',
@@ -23,7 +20,7 @@ customElements.define('lorem-ipsum', class extends HTMLElement {
       'at', 'magna', 'vestibulum', 'turpis', 'ac', 'diam',
       'tincidunt', 'id', 'condimentum', 'enim', 'sodales', 'in',
       'hac', 'habitasse', 'platea', 'dictumst', 'aenean', 'neque',
-      'fusce', 'augue', 'leo', 'eget', 'semper', 'mattis', 
+      'fusce', 'augue', 'leo', 'eget', 'semper', 'mattis',
       'tortor', 'scelerisque', 'nulla', 'interdum', 'tellus', 'malesuada',
       'rhoncus', 'porta', 'sem', 'aliquet', 'et', 'nam',
       'suspendisse', 'potenti', 'vivamus', 'luctus', 'fringilla', 'erat',
@@ -65,18 +62,18 @@ customElements.define('lorem-ipsum', class extends HTMLElement {
   generate() {
     const count = this.input.value;
     const type = this.select.value;
-    let lorem = '';
+    let lorem = '', i, lLen, line;
 
     switch (type) {
       case 'p':
-        for(let i = 0; i < count; i++) {
+        for (let i = 0; i < count; i++) {
           const pLen = this.random(15, 45);
-          lorem += '<p>' + this.wordPunc(pLen) + '</p>';
+          lorem += `<p>${this.wordPunc(pLen)}</p>`;
         }
         break;
       case 'b':
-        let i = count/5;
-        while(lorem.length < count) {
+        i = count / 5;
+        while (lorem.length < count) {
           lorem = this.wordPunc(i);
           i++;
         }
@@ -84,21 +81,21 @@ customElements.define('lorem-ipsum', class extends HTMLElement {
         break;
       case 'l':
         lorem = '<ul>';
-        let lLen = this.random(5, 10);
-        let line = this.wordPunc(lLen);
-        lorem += '<li>' + line + '</li>';
-        for(let i = 1; i < count; i++) {
+        lLen = this.random(5, 10);
+        line = this.wordPunc(lLen);
+        lorem += `<li>${line}</li>`;
+        for (let i = 1; i < count; i++) {
           lLen = this.random(5, 10);
-          line = this.wordPunc(lLen).replace('Lorem ipsum ','');
-          line = line.charAt(0).toUpperCase() + line.substr(1);
-          lorem += '<li>' + line + '</li>'
+          line = this.wordPunc(lLen).replace('Lorem ipsum ', '');
+          line = line.charAt(0).toUpperCase() + line.substring(1);
+          lorem += `<li>${line}</li>`;
         }
         lorem += '</ul>';
         break;
       default:
         lorem = this.wordPunc(count);
     }
-    
+
     this.output.innerHTML = lorem;
   }
 
@@ -111,20 +108,20 @@ customElements.define('lorem-ipsum', class extends HTMLElement {
     let lastPunc = 0;
 
     // add word and possibly punctuation
-    for(let i=2;i<count;i++){
-      let sentence = this.words[this.random(0,wordsLen)];
-      if(i % 4) {
+    for (let i = 2; i < count; i++) {
+      let sentence = this.words[this.random(0, wordsLen)];
+      if (i % 4) {
         // check to capitalize after punctuation
-        if(lastPunc > 4 && sentence !== undefined) {
-          sentence = sentence.charAt(0).toUpperCase() + sentence.substr(1);
+        if (lastPunc > 4 && sentence !== undefined) {
+          sentence = sentence.charAt(0).toUpperCase() + sentence.substring(1);
           lastPunc = 0;
         }
         sentences += sentence;
       } else {
-        lastPunc = this.random(0,puncsLen);
+        lastPunc = this.random(0, puncsLen);
         sentences += sentence + puncs[lastPunc];
       }
-      if(i < count-1){
+      if (i < count - 1) {
         sentences += ' ';
       }
     }
@@ -140,12 +137,11 @@ customElements.define('lorem-ipsum', class extends HTMLElement {
 
   // copy output text
   copy() {
-    let range = document.createRange();
-    let sel = window.getSelection();
+    const range = document.createRange();
+    const sel = window.getSelection();
     range.selectNodeContents(this.output);
     sel.removeAllRanges();
     sel.addRange(range);
     document.execCommand('copy');
   }
-
 });

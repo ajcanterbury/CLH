@@ -1,12 +1,9 @@
 customElements.define('stop-watch', class extends HTMLElement {
   constructor() {
     super();
-    const shadow = this.attachShadow({mode: 'open'});
+    const shadow = this.attachShadow({ mode: 'open' });
     const template = this.querySelector('template');
 
-    // little bit of webcomponent pollyfill if using web-components.js
-    //ShadyCSS.prepareTemplate(template, customElem);
-    
     shadow.appendChild(document.importNode(template.content, true));
 
     // bind this to functions
@@ -21,7 +18,7 @@ customElements.define('stop-watch', class extends HTMLElement {
     this.bStart = this.shadowRoot.querySelector('.start');
     this.bPause = this.shadowRoot.querySelector('.pause');
     this.bReset = this.shadowRoot.querySelector('.reset');
-    this.bLap = this.shadowRoot.querySelector('.lap')
+    this.bLap = this.shadowRoot.querySelector('.lap');
     this.lLaps = this.shadowRoot.querySelector('.laps');
     this.bClear = this.shadowRoot.querySelector('.clear');
     this.tDisplay = this.shadowRoot.querySelector('.time');
@@ -33,34 +30,34 @@ customElements.define('stop-watch', class extends HTMLElement {
     this.SETTINGS = {
       start: 0,
       progress: 0,
-      currentTime: "",
+      currentTime: '',
       playing: false,
       timerId: null,
       laps: [],
       get milliseconds() {
         return Math.trunc(this.progress);
       }
-    }
+    };
   }
 
   connectedCallback() {
-    this.bStart.addEventListener("click", e => {
+    this.bStart.addEventListener('click', (e) => {
       e.preventDefault();
       if (this.SETTINGS.playing === false) {
         this.SETTINGS.playing = true;
         this.SETTINGS.timerId = window.requestAnimationFrame(this.startTimer);
       }
-  
-      //Resuming play
+
+      // Resuming play
       if (this.SETTINGS.progress !== 0) {
         this.SETTINGS.start = performance.now() - this.SETTINGS.progress;
       }
     });
 
-    this.bPause.addEventListener("click", this.pauseTimer);
-    this.bReset.addEventListener("click", this.resetTimer);
-    this.bLap.addEventListener("click", this.recordLap);
-    this.bClear.addEventListener("click", e => {
+    this.bPause.addEventListener('click', this.pauseTimer);
+    this.bReset.addEventListener('click', this.resetTimer);
+    this.bLap.addEventListener('click', this.recordLap);
+    this.bClear.addEventListener('click', (e) => {
       e.preventDefault();
       this.removeChildren(this.lLaps);
       this.SETTINGS.laps = [];
@@ -84,7 +81,7 @@ customElements.define('stop-watch', class extends HTMLElement {
     // Increment this.SETTINGS.start with new delay time
     this.SETTINGS.start += this.SETTINGS.progress;
     this.SETTINGS.progress = 0.01;
-    this.tDisplay.textContent = "00:00:00:00";
+    this.tDisplay.textContent = '00:00:00:00';
   }
 
   recordLap() {
@@ -96,25 +93,30 @@ customElements.define('stop-watch', class extends HTMLElement {
 
   updateLaps() {
     this.removeChildren(this.lLaps);
-    let fragment = document.createDocumentFragment();
-    this.SETTINGS.laps.forEach(e => {
-      this.createEl({ tag: "li", content: e, parent: fragment, addToParent: 1 });
+    const fragment = document.createDocumentFragment();
+    this.SETTINGS.laps.forEach((e) => {
+      this.createEl({
+        tag: 'li',
+        content: e,
+        parent: fragment,
+        addToParent: 1
+      });
     });
     this.lLaps.appendChild(fragment);
-    this.bClear.style.display = this.SETTINGS.laps.length > 0 ? "block" : "none";
+    this.bClear.style.display = this.SETTINGS.laps.length > 0 ? 'block' : 'none';
   }
 
   getDisplay() {
-    this.ms = Math.trunc((this.SETTINGS.milliseconds / 10) % 100);
+    this.ms = Math.trunc(this.SETTINGS.milliseconds / 10 % 100);
     this.s = Math.trunc(this.SETTINGS.milliseconds / 1000)
       .toString()
-      .padStart(2, "0");
-    this.h = parseInt(this.s / 3600);
-    this.s = this.s % 3600; // Purge extracted
+      .padStart(2, '0');
+    this.h = parseInt(this.s / 3600, 10);
+    this.s %= 3600; // Purge extracted
     this.m = Math.trunc(this.s / 60)
       .toString()
-      .padStart(2, "0");
-    this.s = this.s % 60; // Purge extracted
+      .padStart(2, '0');
+    this.s %= 60; // Purge extracted
 
     this.SETTINGS.currentTime = `${this.formatTime(this.h)}:${this.formatTime(this.m)}:${this.formatTime(
       this.s)}:${this.formatTime(this.ms)}`;
@@ -122,17 +124,17 @@ customElements.define('stop-watch', class extends HTMLElement {
   }
 
   formatTime(time) {
-    return time.toString().padStart(2, "0");
+    return time.toString().padStart(2, '0');
   }
 
   createEl({ parent, tag, content, classes, addToParent } = {}) {
-    let el = document.createElement(tag);
+    const el = document.createElement(tag);
     if (content) {
-      let txt = document.createTextNode(content);
+      const txt = document.createTextNode(content);
       el.appendChild(txt);
     }
     if (classes) {
-      el.setAttribute("class", classes);
+      el.setAttribute('class', classes);
     }
     if (addToParent) {
       parent.appendChild(el);
@@ -145,5 +147,4 @@ customElements.define('stop-watch', class extends HTMLElement {
       el.removeChild(el.firstChild);
     }
   }
-
 });

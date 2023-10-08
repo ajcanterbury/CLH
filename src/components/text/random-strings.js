@@ -1,12 +1,9 @@
 customElements.define('random-strings', class extends HTMLElement {
   constructor() {
     super();
-    const shadow = this.attachShadow({mode: 'open'});
+    const shadow = this.attachShadow({ mode: 'open' });
     const template = this.querySelector('template');
 
-    // little bit of webcomponent pollyfill if using web-components.js
-    //ShadyCSS.prepareTemplate(template, customElem);
-    
     shadow.appendChild(document.importNode(template.content, true));
 
     // character lists
@@ -47,7 +44,7 @@ customElements.define('random-strings', class extends HTMLElement {
     let charList = this.alphaNum;
     let out = '';
 
-    if(spec) {
+    if (spec) {
       charList += this.specialChar;
     }
 
@@ -55,8 +52,8 @@ customElements.define('random-strings', class extends HTMLElement {
       case 'a':
         this.chars.style.opacity = '1';
         out = '[';
-        for(let i=0;i<count;i++) {
-          out += '"' + this.randomString(charCount, charList, crypt) + '", ';
+        for (let i = 0; i < count; i++) {
+          out += `"${this.randomString(charCount, charList, crypt)}", `;
         }
         out = out.substring(0, out.length - 2);
         out += ']';
@@ -65,9 +62,8 @@ customElements.define('random-strings', class extends HTMLElement {
         this.chars.style.opacity = '1';
         out = '{';
         // keys are incremeneted values
-        for(let i=0;i<count;i++) {
-          out += '"' + i + '"' + ': ';
-          out += '"' + this.randomString(charCount, charList, crypt) + '", ';
+        for (let i = 0; i < count; i++) {
+          out += `"${i}": "${this.randomString(charCount, charList, crypt)}", `;
         }
         out = out.substring(0, out.length - 2);
         out += '}';
@@ -75,13 +71,10 @@ customElements.define('random-strings', class extends HTMLElement {
       case 'p':
         this.chars.style.opacity = '';
         charList = this.alphaNum.substring(51);
-        for(let i=0;i<count;i++) {
-          out += '(';
+        for (let i = 0; i < count; i++) {
+          out += `(${this.randomString(3, charList, crypt)}) `;
           out += this.randomString(3, charList, crypt);
-          out += ') ';
-          out += this.randomString(3, charList, crypt);
-          out += '-';
-          out += this.randomString(4, charList, crypt) + ', ';
+          out += `-${this.randomString(4, charList, crypt)}, `;
         }
         out = out.substring(0, out.length - 2);
         break;
@@ -89,7 +82,7 @@ customElements.define('random-strings', class extends HTMLElement {
         this.chars.style.opacity = '';
         out = this.randomString(count, charList, crypt);
     }
-    
+
     this.output.innerHTML = out;
   }
 
@@ -98,20 +91,20 @@ customElements.define('random-strings', class extends HTMLElement {
     const charLen = charList.length;
     let string = '';
     let rand = 0;
-    
+
     // pick strong or weak random
-    if(crypt) {
+    if (crypt) {
       let randomBuffer = new Uint32Array(1);
       let randomNumber = 0;
-      for(let i=0;i<len;i++) {
+      for (let i = 0; i < len; i++) {
         randomBuffer = new Uint32Array(1);
         window.crypto.getRandomValues(randomBuffer);
         randomNumber = randomBuffer[0] / (0xffffffff + 1);
-        rand = Math.floor(randomNumber * Math.floor(charLen))
+        rand = Math.floor(randomNumber * Math.floor(charLen));
         string += charList.charAt(rand);
       }
     } else {
-      for(let i=0;i<len;i++) {
+      for (let i = 0; i < len; i++) {
         rand = Math.floor(Math.random() * Math.floor(charLen));
         string += charList.charAt(rand);
       }
@@ -122,12 +115,11 @@ customElements.define('random-strings', class extends HTMLElement {
 
   // copy output text
   copy() {
-    let range = document.createRange();
-    let sel = window.getSelection();
+    const range = document.createRange();
+    const sel = window.getSelection();
     range.selectNodeContents(this.output);
     sel.removeAllRanges();
     sel.addRange(range);
     document.execCommand('copy');
   }
-
 });

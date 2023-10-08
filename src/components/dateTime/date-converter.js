@@ -1,12 +1,18 @@
+const MS_SEC = 1000;
+const getTimeString = (time, utc) => {
+  const hours = String(utc ? time.getUTCHours() : time.getHours()).padStart(2, '0');
+  const minutes = String(time.getMinutes()).padStart(2, '0');
+  const seconds = String(time.getSeconds()).padStart(2, '0');
+
+  return `${hours}:${minutes}:${seconds}`;
+};
+
 customElements.define('date-converter', class extends HTMLElement {
   constructor() {
     super();
-    const shadow = this.attachShadow({mode: 'open'});
+    const shadow = this.attachShadow({ mode: 'open' });
     const template = this.querySelector('template');
 
-    // little bit of webcomponent pollyfill if using web-components.js
-    //ShadyCSS.prepareTemplate(template, customElem);
-    
     shadow.appendChild(document.importNode(template.content, true));
 
     // bind this to functions
@@ -28,67 +34,63 @@ customElements.define('date-converter', class extends HTMLElement {
   }
 
   connectedCallback() {
-    this.sTime.addEventListener('input', () => {this.generate('sTime')});
-    this.sDate.addEventListener('input', () => {this.generate('sTime')});
-    this.gTime.addEventListener('input', () => {this.generate('gTime')});
-    this.gDate.addEventListener('input', () => {this.generate('gTime')});
-    this.epoch.addEventListener('input', () => {this.generate('epoch')});
-    this.milli.addEventListener('input', () => {this.generate('milli')});
+    this.sTime.addEventListener('input', () => this.generate('sTime'));
+    this.sDate.addEventListener('input', () => this.generate('sTime'));
+    this.gTime.addEventListener('input', () => this.generate('gTime'));
+    this.gDate.addEventListener('input', () => this.generate('gTime'));
+    this.epoch.addEventListener('input', () => this.generate('epoch'));
+    this.milli.addEventListener('input', () => this.generate('milli'));
 
     this.generate('sTime');
   }
 
   // generate times
   generate(change) {
-    if(this[change].value === '') return;
-    if(change.includes('Time') && this[change.replace('Time','Date')].value === '') return;
-    
+    if (this[change].value === '') return;
+    if (change.includes('Time') &&
+      this[change.replace('Time', 'Date')].value === '') return;
+
     let time;
-    switch(change) {
+    switch (change) {
       case 'sTime':
-        time = new Date(this.sDate.value + 'T' + this.sTime.value);
+        time = new Date(`${this.sDate.value}T${this.sTime.value}`);
         this.setGMT(time);
-        this.epoch.value = time.getTime()/1000.0;
-        this.milli.value = this.epoch.value * 1000;
-        time = time.toGMT
+        this.milli.value = time.getTime();
+        this.epoch.value = Math.floor(this.milli.value / MS_SEC);
+        time = time.toGMT;
         break;
       case 'gTime':
-        time = new Date(this.gDate.value + 'T' + this.gTime.value + ' UTC');
+        time = new Date(`${this.gDate.value}T${this.gTime.value}.000-00:00`);
         this.setStandard(time);
-        this.milli.value = this.epoch.value * 1000;
+        this.milli.value = time.getTime();
+        this.epoch.value = Math.floor(this.milli.value / MS_SEC);
         break;
       case 'epoch':
-        time = new Date(parseInt(this.epoch.value) * 1000);
+        time = new Date(parseInt(this.epoch.value, 10) * MS_SEC);
         this.setStandard(time);
         this.setGMT(time);
-        this.milli.value = this.epoch.value * 1000;
+        this.milli.value = this.epoch.value * MS_SEC;
         break;
       case 'milli':
-        time = new Date(parseInt(this.milli.value));
+        time = new Date(parseInt(this.milli.value, 10));
         this.setStandard(time);
         this.setGMT(time);
-        this.epoch.value = time.getTime()/1000.0;
+        this.epoch.value = Math.floor(this.milli.value / MS_SEC);
         break;
+      default:
+        // nothing
     }
   }
 
   setStandard(time) {
-    this.sDate.value = time.toJSON().slice(0,10)
-    this.sTime.value =
-      ('0' + time.getHours()).slice(-2)   + ':' + 
-      ('0' + time.getMinutes()).slice(-2) + ':' + 
-      ('0' + time.getSeconds()).slice(-2);
+    this.sDate.value = time.toJSON().slice(0, 10);
+    this.sTime.value = getTimeString(time);
   }
 
   setGMT(time) {
-    this.gDate.value = 
-      time.getUTCFullYear() + '-' + 
-      (('0' + (parseInt(time.getUTCMonth()) + 1))).slice(-2) + '-' + 
-      ('0' + time.getUTCDate()).slice(-2);
-    this.gTime.value =
-      ('0' + time.getUTCHours()).slice(-2)   + ':' + 
-      ('0' + time.getMinutes()).slice(-2) + ':' + 
-      ('0' + time.getSeconds()).slice(-2);
+    const month = String(time.getUTCMonth() + 1).padStart(2, '0');
+    const day = String(time.getUTCDate()).padStart(2, '0');
+    this.gDate.value = `${time.getUTCFullYear()}-${month}-${day}`;
+    this.gTime.value = getTimeString(time, true);
   }
-
 });

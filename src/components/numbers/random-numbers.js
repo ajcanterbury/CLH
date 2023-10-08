@@ -1,12 +1,9 @@
 customElements.define('random-numbers', class extends HTMLElement {
   constructor() {
     super();
-    const shadow = this.attachShadow({mode: 'open'});
+    const shadow = this.attachShadow({ mode: 'open' });
     const template = this.querySelector('template');
 
-    // little bit of webcomponent pollyfill if using web-components.js
-    //ShadyCSS.prepareTemplate(template, customElem);
-    
     shadow.appendChild(document.importNode(template.content, true));
 
     // bind this to functions
@@ -45,8 +42,8 @@ customElements.define('random-numbers', class extends HTMLElement {
     switch (type) {
       case 'a':
         out = '[';
-        for(let i=0;i<count;i++) {
-          out += this.randomNumber(0, max, crypt, spec) + ', ';
+        for (let i = 0; i < count; i++) {
+          out += `${this.randomNumber(0, max, crypt, spec)}, `;
         }
         out = out.substring(0, out.length - 2);
         out += ']';
@@ -54,19 +51,19 @@ customElements.define('random-numbers', class extends HTMLElement {
       case 'd':
         out = '{';
         // keys are incremeneted values
-        for(let i=0;i<count;i++) {
-          out += '' + i + '' + ': ';
-          out += this.randomNumber(0, max, crypt, spec) + ', ';
+        for (let i = 0; i < count; i++) {
+          out += `${i}: `;
+          out += `${this.randomNumber(0, max, crypt, spec)}, `;
         }
         out = out.substring(0, out.length - 2);
         out += '}';
         break;
       case 'm':
         out = '[';
-        for(let i=0;i<count;i++){
+        for (let i = 0; i < count; i++) {
           out += '[';
-          for(let j=0;j<max;j++) {
-            out += this.randomNumber(0, 100, crypt, spec) + ', ';
+          for (let j = 0; j < max; j++) {
+            out += `${this.randomNumber(0, 100, crypt, spec)}, `;
           }
           out = out.substring(0, out.length - 2);
           out += '], ';
@@ -77,33 +74,32 @@ customElements.define('random-numbers', class extends HTMLElement {
       default:
         out = this.randomNumber(count, max, crypt, spec);
     }
-    
+
     this.output.innerHTML = out;
   }
 
   // random string
-  randomNumber(min, max, crypt, spec) {
+  randomNumber(min, max, crypt) {
     // pick strong or weak random
-    if(crypt) {
+    if (crypt) {
       const randomBuffer = new Uint32Array(1);
       window.crypto.getRandomValues(randomBuffer);
       const randomNumber = randomBuffer[0] / (0xffffffff + 1);
-      min = Math.ceil(min); 
+      min = Math.ceil(min);
       const fmax = Math.floor(max);
       return Math.floor(randomNumber * (fmax - min + 1)) + min;
-    } else {
-      return Math.floor(Math.random() * max) + min; 
     }
+
+    return Math.floor(Math.random() * max) + min;
   }
 
   // copy output text
   copy() {
-    let range = document.createRange();
-    let sel = window.getSelection();
+    const range = document.createRange();
+    const sel = window.getSelection();
     range.selectNodeContents(this.output);
     sel.removeAllRanges();
     sel.addRange(range);
     document.execCommand('copy');
   }
-
 });

@@ -1,11 +1,7 @@
-import {addComponent, deleteComponent} from '/clh-loader.js';
+import { addComponent, deleteComponent } from '/clh-loader.js';
 
 class clhMenu extends HTMLElement {
-  constructor() {
-    super();
-  }
-
-  connectedCallback(){
+  connectedCallback() {
     this.logoClick();
     this.windowClick();
     this.parentSelect();
@@ -14,12 +10,10 @@ class clhMenu extends HTMLElement {
 
   // add or delete all open components
   logoClick() {
-    document.getElementById('clhLogo').addEventListener('mouseup', ev => {
-      const menuComps = document.querySelectorAll('clh-menu .submenu input[type=checkbox]'); 
-      const checked = [].filter.call( menuComps, function( elem ) {
-        return elem.checked
-      });
-      if(checked.length > 0) {
+    document.getElementById('clhLogo').addEventListener('mouseup', () => {
+      const menuComps = document.querySelectorAll('clh-menu .submenu input[type=checkbox]');
+      const checked = [].filter.call(menuComps, (elem) => elem.checked);
+      if (checked.length > 0) {
         checked.forEach((elem) => {
           elem.checked = false;
           this.updateComp(elem);
@@ -35,9 +29,9 @@ class clhMenu extends HTMLElement {
 
   // clear radio menu item when clicked
   windowClick() {
-    document.addEventListener('mouseup', ev => {
-      if(ev.target.tagName === 'INPUT') return;
-      if(this.querySelector('.inMenu:checked')){
+    document.addEventListener('mouseup', (ev) => {
+      if (ev.target.tagName === 'INPUT') return;
+      if (this.querySelector('.inMenu:checked')) {
         this.querySelector('.inMenu:checked').checked = false;
       }
     });
@@ -45,16 +39,16 @@ class clhMenu extends HTMLElement {
 
   // parent menu item click
   parentSelect() {
-    this.querySelectorAll('.inMenu').forEach(ins => {
-      ins.addEventListener('mousedown', ev => {
-        if(ev.target.checked) return;
-        if(this.querySelector('.inMenu:checked')){
+    this.querySelectorAll('.inMenu').forEach((ins) => {
+      ins.addEventListener('mousedown', (ev) => {
+        if (ev.target.checked) return;
+        if (this.querySelector('.inMenu:checked')) {
           this.querySelector('.inMenu:checked').checked = false;
         }
       });
-      ins.addEventListener('mouseover', ev => {
-        if(ev.target.checked) return;
-        if(this.querySelector('.inMenu:checked')){
+      ins.addEventListener('mouseover', (ev) => {
+        if (ev.target.checked) return;
+        if (this.querySelector('.inMenu:checked')) {
           this.querySelector('.inMenu:checked').checked = false;
           ev.target.checked = true;
         }
@@ -64,23 +58,23 @@ class clhMenu extends HTMLElement {
 
   // load custom element by clicks
   componentSelect() {
-    this.querySelectorAll('clh-menu .submenu input').forEach(ins => { 
+    this.querySelectorAll('clh-menu .submenu input').forEach((ins) => {
+      // eslint-disable-next-line consistent-this
       const $this = this;
-      ins.addEventListener('change', function() {
+      ins.addEventListener('change', function () {
         $this.updateComp(this);
       });
     });
   }
 
   updateComp(elem) {
-    let component = elem.parentNode.dataset.component;
-    let category = elem.parentNode.parentNode.parentNode.id;
-    if(elem.checked) {
+    const component = elem.parentNode.dataset.component;
+    const category = elem.parentNode.parentNode.parentNode.id;
+    if (elem.checked) {
       addComponent(category, component);
     } else {
-      deleteComponent(category, component+'-wrap');
+      deleteComponent(category, `${component}-wrap`);
     }
   }
-
 }
 customElements.define('clh-menu', clhMenu);

@@ -1,15 +1,13 @@
-/* 
+/*
  * MIT License
  * Copyright (c) 2016 Benjamin De Cock
+ * modified
 */
 
 {
   // utils
-  // ===============================================================================================
-
-  const isEmpty = arr => !arr.length;
-
-  const isObject = obj => Object(obj) === obj;
+  const isEmpty = (arr) => !arr.length;
+  const isObject = (obj) => Object(obj) === obj;
 
   const addProp = (obj, key, value) =>
     Object.defineProperty(obj, key, {
@@ -23,52 +21,48 @@
     Object.keys(attr).reduce((layer, key) => {
       layer.setAttribute(key, attr[key]);
       return layer;
-    }, document.createElementNS("http://www.w3.org/2000/svg", el));
+    }, document.createElementNS('http://www.w3.org/2000/svg', el));
 
-  const fireEvent = host =>
-    host.dispatchEvent(new Event("color-change", {
+  const fireEvent = (host) =>
+    host.dispatchEvent(new Event('color-change', {
       bubbles: true,
       composed: true
     }));
 
 
   // hue slider gradient
-  // ===============================================================================================
-
   const defineColorStops = (steps = 20, arr = [], hue = 0, max = 360) => {
     arr.push({
-      "stop-color": `hsl(${hue}, 100%, 50%)`,
-      "offset": (hue / max).toFixed(2)
+      'stop-color': `hsl(${hue}, 100%, 50%)`,
+      offset: (hue / max).toFixed(2)
     });
     return hue >= max ? arr : defineColorStops(steps, arr, hue + max / steps);
   };
 
   const buildHueSlider = (hue, defs) => {
-    const gradientId = "sliderGradient";
-    const gradient = create("linearGradient", {
+    const gradientId = 'sliderGradient';
+    const gradient = create('linearGradient', {
       id: gradientId
     });
-    defineColorStops().forEach(color => gradient.appendChild(create("stop", color)));
+    defineColorStops().forEach((color) => gradient.appendChild(create('stop', color)));
     defs.appendChild(gradient);
-    hue.setAttribute("fill", `url(#${gradientId})`);
+    hue.setAttribute('fill', `url(#${gradientId})`);
   };
 
 
   // color conversions
-  // ===============================================================================================
-
-  const toHex = rgb =>
+  const toHex = (rgb) =>
     Object.keys(rgb).reduce((str, key) => {
       let hex = rgb[key].toString(16);
       if (hex.length < 2) hex = `0${hex}`;
       return str + hex;
-    }, "").toUpperCase();
+    }, '').toUpperCase();
 
-  const toRGB = hsb => {
+  const toRGB = (hsb) => {
     const h = Number(hsb.h) / 360;
     const i = Math.floor(h * 6);
     const values = (() => {
-      const [s, b] = [hsb.s, hsb.b].map(val => Number(val) / 100);
+      const [s, b] = [hsb.s, hsb.b].map((val) => Number(val) / 100);
       const f = h * 6 - i;
       const p = b * (1 - s);
       const q = b * (1 - f * s);
@@ -84,11 +78,11 @@
       };
     })();
 
-    const [r, g, b] = values[i % 6].map(val => Math.round(val * 255));
+    const [r, g, b] = values[i % 6].map((val) => Math.round(val * 255));
     return { r, g, b };
   };
 
-  const toHSB = color => {
+  const toHSB = (color) => {
     // RGB
     if (isObject(color)) {
       const keys = Object.keys(color);
@@ -98,14 +92,26 @@
       const min = Math.min(rgb.r, rgb.g, rgb.b);
       const max = Math.max(rgb.r, rgb.g, rgb.b);
       const d = max - min;
-      const s = max == 0 ? 0 : d / max;
+      const s = max === 0 ? 0 : d / max;
       const b = max / 255;
       let h;
       switch (max) {
-        case min: h = 0; break;
-        case rgb.r: h = (rgb.g - rgb.b) + d * (rgb.g < rgb.b ? 6 : 0); h /= 6 * d; break;
-        case rgb.g: h = (rgb.b - rgb.r) + d * 2; h /= 6 * d; break;
-        case rgb.b: h = (rgb.r - rgb.g) + d * 4; h /= 6 * d; break;
+        case min:
+          h = 0;
+          break;
+        case rgb.r:
+          h = rgb.g - rgb.b + d * (rgb.g < rgb.b ? 6 : 0);
+          h /= 6 * d;
+          break;
+        case rgb.g:
+          h = rgb.b - rgb.r + d * 2;
+          h /= 6 * d;
+          break;
+        case rgb.b:
+          h = rgb.r - rgb.g + d * 4;
+          h /= 6 * d;
+          break;
+        default: // nothing
       }
       const hsb = {
         h: h * 360,
@@ -116,30 +122,26 @@
     }
 
     // HEX
-    const convert = hex => hex.match(/[\d\w]{2}/g).map(val => parseInt(val, 16));
+    const convert = (hex) => hex.match(/[\d\w]{2}/g).map((val) => parseInt(val, 16));
     const [r, g, b] = convert(color);
     return toHSB({ r, g, b });
   };
 
 
   // input -> object
-  // ===============================================================================================
-
   const selectInputs = (root, id) =>
     [...root.querySelectorAll(`#${id} input`)].reduce((obj, el) =>
       addProp(obj, el.className, el), {});
 
-  const extractValues = inputs =>
+  const extractValues = (inputs) =>
     Object.keys(inputs).reduce((state, key) =>
       addProp(state, key, Number(inputs[key].value)), {});
 
 
   // math helpers
-  // ===============================================================================================
-
   const getHandlerCoordinates = (pickers, type, color) => {
     const rect = pickers[type].palette.getBoundingClientRect();
-    if (type == "hue") {
+    if (type === 'hue') {
       let x = color.h / 360 * rect.width;
       if (x < 5) x = 5;
       else if (x > rect.width - 5) x = rect.width - 5;
@@ -147,7 +149,7 @@
     }
     return {
       x: color.s / 100 * rect.width,
-      y: (1 - (color.b / 100)) * rect.height
+      y: (1 - color.b / 100) * rect.height
     };
   };
 
@@ -174,13 +176,11 @@
   const calcB = (y, height) => {
     if (y > height) return 0;
     if (y < 0) return 100;
-    return (1 - (y / height)) * 100;
+    return (1 - y / height) * 100;
   };
 
 
   // stylesheet
-  // ===============================================================================================
-
   const css = `
     :host, svg {
       display: block;
@@ -225,8 +225,6 @@
 
 
   // template markup
-  // ===============================================================================================
-
   const html = `
     <svg width="200" height="170">
       <defs>
@@ -287,31 +285,29 @@
 
 
   // register custom element
-  // ===============================================================================================
-
-  customElements.define("color-picker", class extends HTMLElement {
+  customElements.define('color-picker', class extends HTMLElement {
     constructor() {
       super();
 
-      const root = this.attachShadow({ mode: "open" });
+      const root = this.attachShadow({ mode: 'open' });
       root.innerHTML = `<style>${css}</style>${html}`;
 
       this.pickers = {
         hue: {
-          palette: root.getElementById("slider"),
-          handler: root.getElementById("sliderHandler")
+          palette: root.getElementById('slider'),
+          handler: root.getElementById('sliderHandler')
         },
         color: {
-          palette: root.getElementById("picker"),
-          handler: root.getElementById("pickerHandler")
+          palette: root.getElementById('picker'),
+          handler: root.getElementById('pickerHandler')
         }
       };
 
-      this.hsbInputs = selectInputs(root, "hsb");
-      this.rgbInputs = selectInputs(root, "rgb");
-      this.hexInput = root.querySelector("#hex input");
+      this.hsbInputs = selectInputs(root, 'hsb');
+      this.rgbInputs = selectInputs(root, 'rgb');
+      this.hexInput = root.querySelector('#hex input');
 
-      buildHueSlider(this.pickers.hue.palette, root.querySelector("defs"));
+      buildHueSlider(this.pickers.hue.palette, root.querySelector('defs'));
 
       this.state = {
         hsb: extractValues(this.hsbInputs),
@@ -321,24 +317,25 @@
 
 
       // mouse events
-      // ===========================================================================================
-
-      const onDrag = callback => {
-        const listen = action =>
-          Object.keys(events).forEach(event =>
+      const onDrag = (callback) => {
+        const listen = (action) =>
+          // eslint-disable-next-line no-use-before-define
+          Object.keys(events).forEach((event) =>
+            // eslint-disable-next-line no-use-before-define
             this[`${action}EventListener`](`mouse${event}`, events[event]));
-        const end = () => listen("remove");
+        const end = () => listen('remove');
         const events = {
           move: callback,
           up: end
         };
-        listen("add");
+        listen('add');
       };
 
-      root.addEventListener("mousedown", e => {
+      root.addEventListener('mousedown', (e) => {
         const callback = (() => {
-          if (e.target == this.pickers.hue.palette) return this.pickHue;
-          if (e.target == this.pickers.color.palette) return this.pickColor;
+          if (e.target === this.pickers.hue.palette) return this.pickHue;
+          if (e.target === this.pickers.color.palette) return this.pickColor;
+          return false;
         })();
         if (!callback) return;
         callback.call(this, e);
@@ -347,23 +344,20 @@
 
 
       // keyboard events
-      // ===========================================================================================
-
-      [this.hsbInputs, this.rgbInputs].forEach(color =>
+      [this.hsbInputs, this.rgbInputs].forEach((color) =>
         Object.keys(color).forEach((key, i, arr) => {
           const el = color[key];
-          el.addEventListener("input", () => {
+          el.addEventListener('input', () => {
             if (!el.validity.valid) return this.updateState();
             const val = el.value;
             this.updateState(
-              color == this.hsbInputs
-              ?	{ [key]: val }
-              : toHSB(arr.reduce((rgb, val) => addProp(rgb, val, color[val].value), {})));
+              color === this.hsbInputs ? { [key]: val }
+                : toHSB(arr.reduce((rgb, val) => addProp(rgb, val, color[val].value), {})));
             el.value = val;
           });
         }));
 
-      this.hexInput.addEventListener("input", () => {
+      this.hexInput.addEventListener('input', () => {
         const val = this.hexInput.value;
         if (val.length < 6) return;
         this.updateState(toHSB(val));
@@ -375,7 +369,7 @@
       return ['hex'];
     }
 
-    attributeChangedCallback(hex) {
+    attributeChangedCallback() {
       this.hexInput.value = this.getAttribute('hex');
       const val = this.hexInput.value;
       if (val.length < 6) return;
@@ -384,22 +378,24 @@
     }
 
     updateState(obj = {}) {
-      Object.keys(obj).forEach(key => addProp(this.state.hsb, key, Math.round(obj[key])));
-      addProp(this.state, "rgb", toRGB(this.state.hsb));
-      addProp(this.state, "hex", toHex(this.state.rgb));
+      Object.keys(obj).forEach((key) => addProp(this.state.hsb, key, Math.round(obj[key])));
+      addProp(this.state, 'rgb', toRGB(this.state.hsb));
+      addProp(this.state, 'hex', toHex(this.state.rgb));
       fireEvent(this);
       this.updateUI();
     }
 
     updateUI({ hsb, rgb, hex } = this.state) {
       const bindings = new Map([[this.hsbInputs, hsb], [this.rgbInputs, rgb]]);
-      bindings.forEach((obj, el) => Object.keys(obj).forEach(key => el[key].value = obj[key]));
+      bindings.forEach((obj, el) => Object.keys(obj).forEach((key) => {
+        el[key].value = obj[key];
+      }));
       this.hexInput.value = hex;
-      this.pickers.color.palette.setAttribute("fill", `hsl(${hsb.h}, 100%, 50%)`);
+      this.pickers.color.palette.setAttribute('fill', `hsl(${hsb.h}, 100%, 50%)`);
 
-      Object.keys(this.pickers).forEach(obj => {
+      Object.keys(this.pickers).forEach((obj) => {
         const coords = getHandlerCoordinates(this.pickers, obj, hsb);
-        Object.keys(coords).forEach(axis =>
+        Object.keys(coords).forEach((axis) =>
           this.pickers[obj].handler.setAttribute(`c${axis}`, coords[axis]));
       });
     }

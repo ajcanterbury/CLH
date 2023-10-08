@@ -1,7 +1,7 @@
 <!doctype html>
 <!--
-Copyright (c) 2018 Anthony Canterbury. All rights reserved.
-This code may only be used under the BSD license.
+Copyright (c) 2021 Anthony Canterbury. All rights reserved.
+This code may only be used under the MIT license.
 -->
 <html lang="en">
 <head>
@@ -20,9 +20,6 @@ This code may only be used under the BSD license.
   <!-- remove on build -->
   <script type="module" src="/reload/reload.js" defer></script>
   <!-- remove done -->
-  <!-- browser polyfills if you really want to support those browsers
-  <script src="/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script> 
-  -->
   <title>CLH &gt;</title>
 </head>
 <body>
@@ -44,11 +41,13 @@ This code may only be used under the BSD license.
     </c-wrapper>
   </template>
   <script>
-    if('serviceWorker' in navigator) {
-      navigator.serviceWorker
-        .register('/sw.js')
-        .then(function() { console.log('Congratulations you\'ve contracted a service worker'); });
-    }
+    const loadServiceWorker = async () => {
+      try {
+        await navigator.serviceWorker.register('/sw.js');
+        console.log('Congratulations, you\'ve contracted a service worker!');
+      } catch {}
+    };
+    if ('serviceWorker' in navigator) { loadServiceWorker(); }
   </script>
   <noscript>
     <h2>Nothing Exists without JavaScript!</h2>

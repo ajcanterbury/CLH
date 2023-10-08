@@ -1,14 +1,11 @@
-import WordFreq from '/components/text/wordfreq.js'
+import WordFreq from '/components/text/wordfreq.js';
 
 customElements.define('text-analyses', class extends HTMLElement {
   constructor() {
     super();
-    const shadow = this.attachShadow({mode: 'open'});
+    const shadow = this.attachShadow({ mode: 'open' });
     const template = this.querySelector('template');
 
-    // little bit of webcomponent pollyfill if using web-components.js
-    //ShadyCSS.prepareTemplate(template, customElem);
-    
     shadow.appendChild(document.importNode(template.content, true));
 
     // bind this to functions
@@ -21,7 +18,7 @@ customElements.define('text-analyses', class extends HTMLElement {
     this.button = this.shadowRoot.querySelector('button');
     this.chars = this.shadowRoot.getElementById('chars');
     this.words = this.shadowRoot.getElementById('words');
-    this.space = this.shadowRoot.getElementById('space')
+    this.space = this.shadowRoot.getElementById('space');
     this.short = this.shadowRoot.getElementById('short');
     this.long = this.shadowRoot.getElementById('long');
     this.spec = this.shadowRoot.getElementById('spec');
@@ -32,7 +29,6 @@ customElements.define('text-analyses', class extends HTMLElement {
     this.resizeHandle = this.shadowRoot.getElementById('resizeHandle');
 
     this.timeout = null;
-
   }
 
   connectedCallback() {
@@ -47,19 +43,19 @@ customElements.define('text-analyses', class extends HTMLElement {
     clearTimeout(this.timeout);
 
     this.timeout = setTimeout(() => {
-      let text = this.tarea.value;
+      const text = this.tarea.value;
       // character cound does not account symbols
       this.chars.textContent = text.length;
 
       // word count
-      let words = text.replace(/(^\s*)|(\s*$)/gi,'');
-      words = words.replace(/[ ]{2,}/gi,' ');
-      words = words.replace(/\n /,'\n');
+      let words = text.replace(/(^\s*)|(\s*$)/gi, '');
+      words = words.replace(/[ ]{2,}/gi, ' ');
+      words = words.replace(/\n /, '\n');
       this.words.textContent = words.split(' ').length;
 
       // count spaces
-      this.space.textContent = (text.match(/ /g) || []).length
-      
+      this.space.textContent = (text.match(/ /g) || []).length;
+
       // shortest word length
       words = words.split(' ');
       this.short.textContent = Math.min(...words.map(({ length }) => length));
@@ -68,27 +64,25 @@ customElements.define('text-analyses', class extends HTMLElement {
       this.long.textContent = Math.max(...words.map(({ length }) => length));
 
       // special character count
-      const specialChars = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~`]/gi;
+      const specialChars = /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?~`]/gi;
       this.spec.textContent = (text.match(specialChars) || []).length;
 
       // count sentences
       const sPattern = /([.?!])\s*(?=[A-Z0-9])/g;
-      this.sent.textContent = text.replace(/\|/g,'').replace(sPattern, '$1|').split('|').length;
+      this.sent.textContent = text.replace(/\|/g, '').replace(sPattern, '$1|').split('|').length;
 
       // count paragraphs
       this.para.textContent = text.replace(/\n$/gm, '').split(/\n/).length;
-
-      this.resizeArea();
 
       // word frequency call webworker frequency
       const options = {
         workerUrl: '/components/text/wordfreq.worker.js',
         minimumCount: 1
-      }
-      const wordfreq = WordFreq(options).process(text, this.buildFreq);
+      };
+      WordFreq(options).process(text, this.buildFreq);
 
+      this.resizeArea();
     }, 400);
-
   }
 
   buildFreq(list) {
@@ -98,15 +92,15 @@ customElements.define('text-analyses', class extends HTMLElement {
     const minWordSize = 0.8;
     const maxWordSize = 6;
 
-    for(let i=0;i<listLen;i++) {
+    for (let i = 0; i < listLen; i++) {
       wordSize = list[i][1] / 1.9;
-      if(wordSize < minWordSize) {
+      if (wordSize < minWordSize) {
         wordSize = minWordSize;
-      } else if(wordSize > maxWordSize) {
+      } else if (wordSize > maxWordSize) {
         wordSize = maxWordSize;
       }
-      spans += '<span style="font-size:'+ wordSize + 'rem;" title="' + list[i][1]
-         + '">' + list[i][0] + ' </span>';
+      spans += `<span style="font-size:${wordSize}rem;" title="${list[i][1]}`;
+      spans += `">${list[i][0]} </span>`;
     }
 
     // fix size
@@ -114,8 +108,7 @@ customElements.define('text-analyses', class extends HTMLElement {
   }
 
   resizeArea() {
-    this.freq.style.width = this.tarea.offsetWidth - 2 + 'px';
-    this.freq.style.height =  this.offsetHeight + 10 - this.tarea.offsetHeight + 'px';
+    this.freq.style.width = `${this.tarea.offsetWidth - 2}px`;
+    // this.freq.style.height =  `${this.freq.offsetHeight + 10}px`;
   }
-
 });
