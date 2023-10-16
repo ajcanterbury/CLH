@@ -122,7 +122,7 @@ buildComp(compTypes[0], 0);
 // remove test scripts from index.html
 fs.readFile('src/index.html', 'utf8', (err, contents) => {
   if (err) throw err;
-  const removeRE = /<!-- remove on build -->([\S\s]*?)<!-- remove done -->/;
+  const removeRE = /<!-- remove on build -->([\S\s]*?)<!-- remove done -->/g;
   contents = contents.replace(removeRE, '');
   fs.writeFile('src/indexDIST.html', contents, (err) => {
     if (err) throw err;
