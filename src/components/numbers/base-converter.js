@@ -1,3 +1,5 @@
+import { copyToClipboard } from '/components/libs/clipboard.js';
+
 const baseConverter = (nbaseFrom, baseFrom, baseTo) => {
   const symbols = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   if (baseFrom <= 0 || baseFrom > symbols.length || baseTo <= 0 || baseTo > symbols.length) {
@@ -51,21 +53,23 @@ customElements.define('base-converter', class extends HTMLElement {
 
     // bind this to functions
     this.converter = this.converter.bind(this);
+    this.copy = this.copy.bind(this);
 
     // bind form elements
     this.nFrom = this.shadowRoot.getElementById('numFrom');
     this.nTo = this.shadowRoot.getElementById('numTo');
     this.bFrom = this.shadowRoot.getElementById('baseFrom');
     this.bTo = this.shadowRoot.getElementById('baseTo');
+    this.button = this.shadowRoot.querySelector('button');
 
     this.timeout = null;
   }
 
   connectedCallback() {
     this.nFrom.addEventListener('input', this.converter);
-    this.nTo.addEventListener('input', this.converter);
     this.bFrom.addEventListener('change', this.converter);
     this.bTo.addEventListener('change', this.converter);
+    this.button.addEventListener('click', this.copy);
   }
 
   // convert base, delay for typing
@@ -75,5 +79,10 @@ customElements.define('base-converter', class extends HTMLElement {
     this.timeout = setTimeout(() => {
       this.nTo.value = baseConverter(this.nFrom.value, this.bFrom.value, this.bTo.value);
     }, 300);
+  }
+
+  // copy output text
+  async copy() {
+    await copyToClipboard(this.nTo);
   }
 });

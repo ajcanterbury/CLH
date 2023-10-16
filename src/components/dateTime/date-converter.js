@@ -1,3 +1,5 @@
+import { copyToClipboard } from '/components/libs/clipboard.js';
+
 const MS_SEC = 1000;
 const getTimeString = (time, utc) => {
   const hours = String(utc ? time.getUTCHours() : time.getHours()).padStart(2, '0');
@@ -19,6 +21,7 @@ customElements.define('date-converter', class extends HTMLElement {
     this.generate = this.generate.bind(this);
     this.setStandard = this.setStandard.bind(this);
     this.setGMT = this.setGMT.bind(this);
+    this.copy = this.copy.bind(this);
 
     // bind form elements
     this.sTime = this.shadowRoot.getElementById('standardTime');
@@ -27,6 +30,8 @@ customElements.define('date-converter', class extends HTMLElement {
     this.gDate = this.shadowRoot.getElementById('gmtDate');
     this.epoch = this.shadowRoot.getElementById('epochTime');
     this.milli = this.shadowRoot.getElementById('milliTime');
+    this.unixCopy = this.shadowRoot.getElementById('unixCopy');
+    this.milliCopy = this.shadowRoot.getElementById('milliCopy');
 
     // set current date and time
     const time = new Date();
@@ -40,6 +45,8 @@ customElements.define('date-converter', class extends HTMLElement {
     this.gDate.addEventListener('input', () => this.generate('gTime'));
     this.epoch.addEventListener('input', () => this.generate('epoch'));
     this.milli.addEventListener('input', () => this.generate('milli'));
+    this.unixCopy.addEventListener('click', () => this.copy(true));
+    this.milliCopy.addEventListener('click', () => this.copy(false));
 
     this.generate('sTime');
   }
@@ -92,5 +99,10 @@ customElements.define('date-converter', class extends HTMLElement {
     const day = String(time.getUTCDate()).padStart(2, '0');
     this.gDate.value = `${time.getUTCFullYear()}-${month}-${day}`;
     this.gTime.value = getTimeString(time, true);
+  }
+
+  // copy output text
+  async copy(unix = true) {
+    await copyToClipboard(unix ? this.epoch : this.milli);
   }
 });

@@ -17,6 +17,8 @@ customElements.define('time-diff', class extends HTMLElement {
     this.mDate = this.shadowRoot.getElementById('modDate');
     this.days = this.shadowRoot.getElementById('days');
     this.hours = this.shadowRoot.getElementById('hours');
+    this.minutes = this.shadowRoot.getElementById('minutes');
+    this.seconds = this.shadowRoot.getElementById('seconds');
 
     // set current date and time
     const time = new Date();
@@ -31,6 +33,8 @@ customElements.define('time-diff', class extends HTMLElement {
     this.mDate.addEventListener('input', () => this.generate('time'));
     this.days.addEventListener('input', () => this.generate('diff'));
     this.hours.addEventListener('input', () => this.generate('diff'));
+    this.minutes.addEventListener('input', () => this.generate('diff'));
+    this.seconds.addEventListener('input', () => this.generate('diff'));
   }
 
   // generate time differnces
@@ -39,20 +43,35 @@ customElements.define('time-diff', class extends HTMLElement {
     if (type === 'time') {
       const dateTo = new Date(`${this.mDate.value}T${this.mTime.value}`);
       const timeDiff = Math.abs(dateTo.getTime() - dateFrom.getTime());
-      this.days.value = Math.floor(timeDiff / (1000 * 3600 * 24));
-      this.hours.value = Math.floor(Math.abs(dateTo - dateFrom) / 36e5) -
-        this.days.value * 24;
+
+      this.days.value = Math.floor(timeDiff / (36e5 * 24));
+      this.hours.value = Math.floor(timeDiff % (36e5 * 24) / 36e5);
+      this.minutes.value = Math.floor(timeDiff % 36e5 / 60000);
+      this.seconds.value = Math.floor(timeDiff % 60000 / 1000);
     } else {
-      if (parseInt(this.hours.value, 10) === 24) {
-        this.days.value++;
-        this.hours.value = 0;
+      dateFrom.setDate(dateFrom.getDate() + parseInt(this.days.value, 10) - 1);
+
+      // Adjust seconds and handle overflow
+      dateFrom.setSeconds(dateFrom.getSeconds() + parseInt(this.seconds.value, 10));
+      while (dateFrom.getSeconds() >= 60) {
+        dateFrom.setMinutes(dateFrom.getMinutes() + 1);
+        dateFrom.setSeconds(dateFrom.getSeconds() - 60);
       }
-      if (parseInt(this.hours.value, 10) === -1) {
-        this.days.value--;
-        this.hours.value = 23;
+
+      // Adjust minutes and handle overflow
+      dateFrom.setMinutes(dateFrom.getMinutes() + parseInt(this.minutes.value, 10));
+      while (dateFrom.getMinutes() >= 60) {
+        dateFrom.setHours(dateFrom.getHours() + 1);
+        dateFrom.setMinutes(dateFrom.getMinutes() - 60);
       }
-      dateFrom.setDate(dateFrom.getDate() + (this.days.value - 1));
-      dateFrom.setTime(dateFrom.getTime() + this.hours.value * 60 * 60 * 1000);
+
+      // Adjust hours and handle overflow
+      dateFrom.setHours(dateFrom.getHours() + parseInt(this.hours.value, 10));
+      while (dateFrom.getHours() >= 24) {
+        dateFrom.setDate(dateFrom.getDate() + 1);
+        dateFrom.setHours(dateFrom.getHours() - 24);
+      }
+
       this.setTime(dateFrom, 'm');
     }
   }

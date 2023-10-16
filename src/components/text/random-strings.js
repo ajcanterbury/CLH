@@ -1,3 +1,5 @@
+import { copyToClipboard } from '/components/libs/clipboard.js';
+
 customElements.define('random-strings', class extends HTMLElement {
   constructor() {
     super();
@@ -114,12 +116,7 @@ customElements.define('random-strings', class extends HTMLElement {
   }
 
   // copy output text
-  copy() {
-    const range = document.createRange();
-    const sel = window.getSelection();
-    range.selectNodeContents(this.output);
-    sel.removeAllRanges();
-    sel.addRange(range);
-    document.execCommand('copy');
+  async copy() {
+    await copyToClipboard(this.output);
   }
 });

@@ -30,31 +30,29 @@ export const loadTemplate = async (customElem, callback) => {
   }
 
   const html = await response.text();
-  let category = '';
+  let customElemName = customElem;
 
   // parse custom element file name
-  if (customElem.includes('/')) {
-    // overload indexOf for second subdirectory category
-    category = customElem.substring(0,
-      customElem.indexOf('/', customElem.indexOf('/') + 1) + 1);
-    customElem = customElem.substring(customElem
-      .indexOf('/', customElem.indexOf('/') + 1) + 1);
+  if (customElemName.includes('/')) {
+    customElemName = customElemName.substring(customElemName
+      .lastIndexOf('/', customElemName.lastIndexOf('/') + 1) + 1);
   }
 
   // add html to custom element placeholder within doc main
-  let placeholder = document.querySelector(customElem);
+  let placeholder = document.querySelector(customElemName);
   if (placeholder) {
     placeholder.innerHTML = html;
-  } else if (document.getElementById(`${customElem}-wrap`)) {
-    placeholder = document.createElement(customElem);
+  } else {
+    placeholder = document.createElement(customElemName);
     placeholder.innerHTML = html;
+    document.body.prepend(placeholder);
     document.getElementById(customElem).appendChild(placeholder);
   }
 
   // load script if there is no script in the html
   if (!placeholder.querySelector('script')) {
     const elemScript = document.createElement('script');
-    elemScript.setAttribute('src', `${category}${customElem}.js`);
+    elemScript.setAttribute('src', `${customElem}.js`);
     elemScript.setAttribute('type', 'module');
     elemScript.setAttribute('defer', '');
     document.head.appendChild(elemScript);
@@ -107,6 +105,18 @@ class clhWrapper extends HTMLElement {
     });
   }
 }
+
+// copy component
+customElements.define('copy-component', class extends HTMLElement {
+  constructor() {
+    super();
+    const shadow = this.attachShadow({ mode: 'open' });
+    const template = document.getElementById('copyComponent');
+    if (template) {
+      shadow.appendChild(document.importNode(template.content, true));
+    }
+  }
+});
 
 // create component wrapper
 export const addComponent = (category, component) => {

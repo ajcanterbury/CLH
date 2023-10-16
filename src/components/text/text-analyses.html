@@ -12,6 +12,7 @@
       width: 100%;
       box-sizing: border-box;
       max-width: 100%;
+      font-family: 'Source Sans Pro', sans-serif;
       font-size: 0.9rem;
       height: 10rem;
       background: #dee0f7;
@@ -50,14 +51,17 @@
   <textarea placeholder="text to analyze"></textarea>
   <ul>
     <li><span class="justify">characters </span>= <span id="chars">0</span></li>
-    <li><span class="justify">words </span>= <span id="words">0</span></li>
+    <li><span class="justify">bytes </span>= <span id="bytes">0</span></li>
     <li><span class="justify">spaces </span>= <span id="space">0</span></li>
+    <li><span class="justify">specials </span>= <span id="special">0</span></li>
+    <li><span class="justify">words </span>= <span id="words">0</span></li>
     <li><span class="justify">shortest </span>= <span id="short">0</span></li>
     <li><span class="justify">longest </span>= <span id="long">0</span></li>
-    <li><span class="justify">special </span>= <span id="spec">0</span></li>
     <li><span class="justify">sentences </span>= <span id="sent">0</span></li>
+    <li><span class="justify">lines </span>= <span id="lines">0</span></li>
     <li><span class="justify">paragraphs </span>= <span id="para">0</span></li>
+    <li><span class="justify">json </span>= <span id="json">TRUE</span></li>
+    <li><span class="justify">frequency </span>: <span id="json"></span></li>
   </ul>
-  <span id="hash"></span>
   <div id="freq"></div>
 </template>

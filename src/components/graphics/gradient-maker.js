@@ -1,5 +1,6 @@
 import { addComponent, deleteComponent } from '/clh-loader.js';
-import randomColor from '/components/graphics/random-color-lib.js';
+import { copyToClipboard } from '/components/libs/clipboard.js';
+import randomColor from '/components/libs/random-color-lib.js';
 
 customElements.define('gradient-maker', class extends HTMLElement {
   constructor() {
@@ -15,6 +16,7 @@ customElements.define('gradient-maker', class extends HTMLElement {
     this.deleteGrad = this.deleteGrad.bind(this);
     this.drag = this.drag.bind(this);
     this.setColor = this.setColor.bind(this);
+    this.copy = this.copy.bind(this);
 
     // load color-picker component
     addComponent('graphics', 'color-picker');
@@ -41,6 +43,7 @@ customElements.define('gradient-maker', class extends HTMLElement {
     this.deg = this.shadowRoot.querySelector('span');
     this.current = false;
     this.width = false;
+    this.copyButton = this.shadowRoot.getElementById('copy');
   }
 
   connectedCallback() {
@@ -56,6 +59,7 @@ customElements.define('gradient-maker', class extends HTMLElement {
     this.picker.addEventListener('color-change', () => {
       this.setColor();
     });
+    this.copyButton.addEventListener('click', this.copy);
   }
 
   generate() {
@@ -110,7 +114,7 @@ customElements.define('gradient-maker', class extends HTMLElement {
     const colorOff = (this.colors[len - 1].offsetLeft + this.colors[len].offsetLeft) / 2;
     slider.classList.add('colorSlider');
     slider.setAttribute('id', `color-${lastIdNum}`);
-    this.width = this.display.offsetWidth - 2;
+    this.width = this.display.offsetWidth - 5;
     slider.style.left = `${this.width}px`;
     this.colors[len].style.left = `${colorOff}px`;
     slider.innerHTML = `<hr/>
@@ -231,5 +235,10 @@ customElements.define('gradient-maker', class extends HTMLElement {
     const b = parseInt(hex.substring(4, 6), 16);
 
     return `rgba(${r},${g},${b},${opacity / 100})`;
+  }
+
+  // copy output text
+  async copy() {
+    await copyToClipboard(this.output);
   }
 });

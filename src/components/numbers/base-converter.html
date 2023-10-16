@@ -3,14 +3,21 @@
     :root {
       min-width: 24.4rem;
     }
+    section {
+      display: grid;
+      grid-template-columns: 1fr 2rem 1fr;
+      align-items: center;
+      max-width: 24rem;
+    }
     input {
-      margin-top: 0.5rem;
+      display: inline-block;
+      margin-bottom: 0.9rem;
       background: var(--fainter-color);
       border: none;
       padding: 0.2rem 0.4rem;
       font-size:1.1rem;
       color: #dee0f7;
-      width: 10rem;
+      width: calc(50% + 4.5rem);
     }
     span {
       margin: 0.5rem;
@@ -27,25 +34,37 @@
       color: #dee0f7;
     }
     #baseTo {
-      margin-left: 6rem;
+      /* margin-left: 6rem; */
     }
     div {
-      margin-top:1rem;
+      /* margin-top:1rem; */
+    }
+    button {
+      background: none;
+      font-size: 1.1rem;
+      color: var(--faint-color);
+      padding: 0.4rem 0.6rem;
+      border: none;
+      border-radius: 0;
+      margin-top: -0.2em;
+    }
+    button:hover {
+      color: var(--primary-color);
+      text-shadow: 0 0 0.8rem var(--highlight-color);
+    }
+    button:active, button:focus {
+      outline: none;
+      color: white;
     }
     @media only screen and (max-width: 400px) {
       input {
         width: 8rem;
       }
-      #baseTo {
-        margin-left: 4rem;
-      }
     }
   </style>
   <section>
-    <input type="text" id="numFrom" value="0"/>
-    <span>to</span> 
-    <input type="text" id="numTo"  value="0"/> 
     <div>
+      <input type="text" id="numFrom" value="0"/>
       <select id="baseFrom" value="10">
         <option value="2">2 (binary)</option>
         <option>3</option>
@@ -79,6 +98,10 @@
         <option>31</option>
         <option>32</option>
       </select>
+    </div>
+    <span>to</span>
+    <div>
+      <input type="text" id="numTo" value="0" readonly="readonly"/> 
       <select id="baseTo" value="10">
         <option value="2">2 (binary)</option>
         <option>3</option>
@@ -112,6 +135,7 @@
         <option>31</option>
         <option>32</option>
       </select>
+      <button><copy-component/></button>
     </div>
   </section>
 </template>

@@ -41,6 +41,9 @@ header {
   background: rgba(12, 12, 12, 0.8);
   z-index: 100;
 }
+textarea {
+  font-family: 'Source Sans Pro', sans-serif;
+}
 #helperIntro {
   position: absolute;
   top: 3rem;
@@ -64,7 +67,7 @@ c-wrapper {
   display: none;
   position: relative;
   box-sizing: border-box;
-  width: 0;
+  min-width: 23rem;
   max-width: calc(50% - 1rem);
   margin: 0.5rem;
   padding: 0.5rem;
@@ -75,7 +78,6 @@ c-wrapper {
 c-wrapper.show {
   display: inline-block;
   transform: rotateY(0deg);
-  min-width: 23rem;
   width: auto;
   animation: clhShow .8s ease-in-out;
 }
@@ -118,6 +120,7 @@ c-wrapper .resizeComp {
 c-wrapper button {
   border: 0.01rem solid var(--highlight-color);
 }
+
 @keyframes clhShow {
   0% {
     display: none;
@@ -137,17 +140,21 @@ c-wrapper button {
 @media only screen and (max-width: 900px) {
   c-wrapper {
     max-width: calc(100% - 1rem);
+    min-width: 15rem;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  c-wrapper {
+    margin: 0.5rem auto;
+  }
+  c-wrapper.show {
+    min-width: calc(100% - 1rem);
   }
 }
 
 @media only screen and (max-width: 400px) {
   #clhMain {
     margin: 2rem 0.1rem 0;
-  }
-  c-wrapper {
-    margin: 0.5rem 0.1rem;
-  }
-  c-wrapper.show {
-    min-width: 22rem;
   }
 }

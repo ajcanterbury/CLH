@@ -1,3 +1,5 @@
+import { copyToClipboard } from '/components/libs/clipboard.js';
+
 /*
  * MIT License
  * Copyright (c) 2016 Benjamin De Cock
@@ -197,29 +199,45 @@
     }
     section {
       justify-content: space-between;
-      width: 200px;
-      margin: 10px auto 0;
+      width: 13.5rem;
+      margin: 0.7rem auto 0;
     }
     label, input {
       border: 0
     }
     attr {
-      width: 18px;
-      padding: 2px 0;
+      width: 1rem;
+      padding: 0.15rem 0;
       text-align: center;
       font-weight: 500;
     }
     input {
       margin: 0;
       border: 0;
-      width: 175px;
-      padding: 3px 0 3px 4px;
+      padding: 0.15rem 0 0.15rem 0.2rem;
       background: #2c434c;
       color: #eee;
       font-size: 0.8em;
     }
     [type=number] {
-      width: 37px;
+      width: 2.4rem;
+    }
+    button {
+      background: none;
+      float: right;
+      font-size: 1.1rem;
+      color: var(--faint-color);
+      padding: 0.35rem 1rem;
+      border: none;
+      border-radius: 0;
+    }
+    button:hover {
+      color: var(--primary-color);
+      text-shadow: 0 0 0.8rem var(--highlight-color);
+    }
+    button:active, button:focus {
+      outline: none;
+      color: white;
     }
   `;
 
@@ -260,6 +278,7 @@
         <attr title="Brightness">B</attr>
         <input type="number" min="0" max="100" value="100" class="b">
       </label>
+      <button id="hsbCopy"><copy-component/></button>
     </section>
     <section id="rgb">
       <label>
@@ -274,12 +293,14 @@
         <attr title="Blue">B</attr>
         <input type="number" min="0" max="255" value="255" class="b">
       </label>
+      <button id="rgbCopy"><copy-component/></button>
     </section>
     <section id="hex">
       <label>
         <attr title="Hexadecimal">#</attr>
-        <input value="FFFFFF">
+        <input value="FFFFFF" style="width: 12.2em;">
       </label>
+      <button id="hexCopy"><copy-component/></button>
     </section>
   `;
 
@@ -306,6 +327,11 @@
       this.hsbInputs = selectInputs(root, 'hsb');
       this.rgbInputs = selectInputs(root, 'rgb');
       this.hexInput = root.querySelector('#hex input');
+
+      this.copy = this.copy.bind(this);
+      this.hsbCopy = root.getElementById('hsbCopy');
+      this.rgbCopy = root.getElementById('rgbCopy');
+      this.hexCopy = root.getElementById('hexCopy');
 
       buildHueSlider(this.pickers.hue.palette, root.querySelector('defs'));
 
@@ -363,6 +389,16 @@
         this.updateState(toHSB(val));
         this.hexInput.value = val;
       });
+
+      this.hsbCopy.addEventListener('click', () => {
+        this.copy('hsb');
+      });
+      this.rgbCopy.addEventListener('click', () => {
+        this.copy('rgb');
+      });
+      this.hexCopy.addEventListener('click', () => {
+        this.copy('hex');
+      });
     }
 
     static get observedAttributes() {
@@ -413,6 +449,13 @@
       const { x, width } = getPickCoordinates(this.pickers.hue.palette, e);
       this.updateState({ h: calcH(x, width) });
       e.preventDefault();
+    }
+
+    // copy output text
+    async copy(type) {
+      let output = this.state[type];
+      if (output !== 'hex') output = JSON.stringify(output);
+      await copyToClipboard(output);
     }
   });
 }

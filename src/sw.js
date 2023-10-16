@@ -1,5 +1,5 @@
 /* service worker file */
-const CACHE_ID = 'v5';
+const CACHE_ID = 'v6';
 const FILES = [
   '/',
   '/index.html',
@@ -39,23 +39,31 @@ const COMPONENTS = [
   '/components/graphics/color-picker.js',
   '/components/graphics/gradient-maker.html',
   '/components/graphics/gradient-maker.js',
-  '/components/graphics/random-color-lib.js',
   '/components/graphics/random-color.html',
   '/components/graphics/random-color.js',
+  '/components/libs/beautify-css.js',
+  '/components/libs/beautify-html.js',
+  '/components/libs/beautify.js',
+  '/components/libs/clipboard.js',
+  '/components/libs/decimal.js',
+  '/components/libs/random-color-lib.js',
   '/components/numbers/base-converter.html',
   '/components/numbers/base-converter.js',
-  '/components/numbers/decimal.js',
   '/components/numbers/digit-generate.html',
   '/components/numbers/digit-generate.js',
   '/components/numbers/digit-worker.js',
   '/components/numbers/random-numbers.html',
   '/components/numbers/random-numbers.js',
+  '/components/text/encode-decode.html',
+  '/components/text/encode-decode.js',
   '/components/text/lorem-ipsum.html',
   '/components/text/lorem-ipsum.js',
   '/components/text/random-strings.html',
   '/components/text/random-strings.js',
   '/components/text/text-analyses.html',
   '/components/text/text-analyses.js',
+  '/components/text/text-beautify.html',
+  '/components/text/text-beautify.js',
   '/components/text/wordfreq.js',
   '/components/text/wordfreq.worker.js'
 ];

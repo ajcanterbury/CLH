@@ -23,18 +23,26 @@
       color: #dee0f7;
     }
     button {
-      background: var(--fainter-color);
+      background: none;
       float: right;
       font-size: 1.1rem;
-      color: #dee0f7;
-      padding: 0.11rem 0.6rem;
-      border: 0.01rem solid var(--secondary-color);
+      color: var(--faint-color);
+      padding: 0.6rem 1rem;
+      border: none;
       border-radius: 0;
+    }
+    button:hover {
+      color: var(--primary-color);
+      text-shadow: 0 0 0.8rem var(--highlight-color);
+    }
+    button:active, button:focus {
+      outline: none;
+      color: white;
     }
     div {
       margin-top:1rem;
       padding: 0.5rem;
-      min-width: 15rem;
+      min-width: 5rem;
       max-width: 100%;
       height: calc(100% - 6.2rem);
       background: #dee0f7;
@@ -45,13 +53,14 @@
       user-select: text;
     }
   </style>
-  <input type="number" min="1" max="10000" value="20"/>
+  <input type="number" min="1" max="10000" value="5"/>
   <select>
     <option value="w">words</option>
     <option value="b">bytes</option>
     <option value="p">paragraphs</option>
     <option value="l">lists</option>
+    <option value="j">JSON</option>
   </select>
-  <button>copy</button>
+  <button><copy-component/></button>
   <div></div>
 </template>

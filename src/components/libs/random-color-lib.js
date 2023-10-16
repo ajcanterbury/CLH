@@ -35,17 +35,17 @@ const HexToHSB = (hex) => {
   hex = hex.length === 3 ? hex.replace(/(.)/g, '$1$1') : hex;
 
   const red = parseInt(hex.substring(0, 2), 16) / 255,
-    green = parseInt(hex.substr(2, 4), 16) / 255,
-    blue = parseInt(hex.substr(4, 6), 16) / 255;
+    green = parseInt(hex.substring(2, 4), 16) / 255,
+    blue = parseInt(hex.substring(4, 6), 16) / 255;
 
   const cMax = Math.max(red, green, blue),
     delta = cMax - Math.min(red, green, blue),
     saturation = cMax ? delta / cMax : 0;
 
   switch (cMax) {
-    case red: return [60 * ((green - blue) / delta) % 6 || 0, saturation, cMax];
-    case green: return [60 * ((blue - red) / delta) + 2 || 0, saturation, cMax];
-    case blue: return [60 * ((red - green) / delta) + 4 || 0, saturation, cMax];
+    case red: return [60 * ((green - blue) / delta) % 360 || 0, saturation, cMax];
+    case green: return [60 * ((blue - red) / delta) + 120 || 0, saturation, cMax];
+    case blue: return [60 * ((red - green) / delta) + 240 || 0, saturation, cMax];
     default: // nothing
   }
 };

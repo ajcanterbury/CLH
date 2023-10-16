@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-self.importScripts('/components/numbers/decimal.js');
+self.importScripts('/components/libs/decimal.js');
 
 // square root of 2, need a faster one
 const sq2 = (digits) => {

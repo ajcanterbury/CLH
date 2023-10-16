@@ -1,3 +1,5 @@
+import { copyToClipboard } from '/components/libs/clipboard.js';
+
 customElements.define('lorem-ipsum', class extends HTMLElement {
   constructor() {
     super();
@@ -40,6 +42,8 @@ customElements.define('lorem-ipsum', class extends HTMLElement {
       'elementum', 'tempor', 'risus', 'cras'
     ];
 
+    this.jsonTypes = ['number', 'string', 'boolean', 'array', 'object'];
+
     // bind this to functions
     this.generate = this.generate.bind(this);
     this.copy = this.copy.bind(this);
@@ -65,21 +69,21 @@ customElements.define('lorem-ipsum', class extends HTMLElement {
     let lorem = '', i, lLen, line;
 
     switch (type) {
-      case 'p':
+      case 'p': // paragraphs
         for (let i = 0; i < count; i++) {
           const pLen = this.random(15, 45);
           lorem += `<p>${this.wordPunc(pLen)}</p>`;
         }
         break;
-      case 'b':
+      case 'b': // bytes
         i = count / 5;
         while (lorem.length < count) {
           lorem = this.wordPunc(i);
           i++;
         }
-        lorem = lorem.substring(0, count - 1);
+        lorem = lorem.substring(0, count);
         break;
-      case 'l':
+      case 'l': // lines
         lorem = '<ul>';
         lLen = this.random(5, 10);
         line = this.wordPunc(lLen);
@@ -92,7 +96,15 @@ customElements.define('lorem-ipsum', class extends HTMLElement {
         }
         lorem += '</ul>';
         break;
-      default:
+      case 'j': // json
+        lorem = '{<br/>';
+        for (let i = 0; i < count; i++) {
+          lorem += `&nbsp;&nbsp;"${this.wordPunc(1, true, true)}": ${this.randomJsonVal()}`;
+          lorem += i !== count - 1 ? ',<br/>' : '<br/>';
+        }
+        lorem += '}';
+        break;
+      default: // words
         lorem = this.wordPunc(count);
     }
 
@@ -100,15 +112,15 @@ customElements.define('lorem-ipsum', class extends HTMLElement {
   }
 
   // words with punctuation
-  wordPunc(count) {
+  wordPunc(count, noSentence = false, noPunc = false) {
     const puncs = ['', ',', '', ':', ';', '.', '?', '!'];
     const puncsLen = puncs.length;
     const wordsLen = this.words.length;
-    let sentences = 'Lorem ipsum ';
+    let sentences = noSentence ? '' : 'Lorem ipsum ';
     let lastPunc = 0;
 
     // add word and possibly punctuation
-    for (let i = 2; i < count; i++) {
+    for (let i = noSentence ? 0 : 2; i < count; i++) {
       let sentence = this.words[this.random(0, wordsLen)];
       if (i % 4) {
         // check to capitalize after punctuation
@@ -117,15 +129,17 @@ customElements.define('lorem-ipsum', class extends HTMLElement {
           lastPunc = 0;
         }
         sentences += sentence;
-      } else {
+      } else if (!noPunc) {
         lastPunc = this.random(0, puncsLen);
         sentences += sentence + puncs[lastPunc];
+      } else {
+        sentences += sentence;
       }
       if (i < count - 1) {
         sentences += ' ';
       }
     }
-    sentences += '.';
+    sentences += noSentence ? '' : '.';
 
     return sentences;
   }
@@ -135,13 +149,36 @@ customElements.define('lorem-ipsum', class extends HTMLElement {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
+  // random typed value: 123, "hello", true, [1,2,3], { "lorem": randomType }
+  randomJsonVal(typeStop = 4) {
+    const type = this.jsonTypes[this.random(0, typeStop)];
+    let value;
+    switch (type) {
+      case 'number':
+        value = this.random(0, 1000);
+        break;
+      case 'string':
+        value = `"${this.wordPunc(1, true, true)}"`;
+        break;
+      case 'boolean':
+        value = Boolean(this.random(0, 1));
+        break;
+      case 'array':
+        value =
+          `[${[...Array(this.random(1, 10)).fill()
+            .map(() => this.randomJsonVal(2))].join(', ')}]`;
+        break;
+      case 'object':
+        value = `{ "${this.wordPunc(1, true, true)}": ${this.randomJsonVal(2)} }`;
+        break;
+      default:  // nothing
+    }
+
+    return value;
+  }
+
   // copy output text
-  copy() {
-    const range = document.createRange();
-    const sel = window.getSelection();
-    range.selectNodeContents(this.output);
-    sel.removeAllRanges();
-    sel.addRange(range);
-    document.execCommand('copy');
+  async copy() {
+    await copyToClipboard(this.output);
   }
 });

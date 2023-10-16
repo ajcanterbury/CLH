@@ -17,15 +17,19 @@ customElements.define('text-analyses', class extends HTMLElement {
     this.tarea = this.shadowRoot.querySelector('textarea');
     this.button = this.shadowRoot.querySelector('button');
     this.chars = this.shadowRoot.getElementById('chars');
-    this.words = this.shadowRoot.getElementById('words');
+    this.bytes = this.shadowRoot.getElementById('bytes');
     this.space = this.shadowRoot.getElementById('space');
+    this.special = this.shadowRoot.getElementById('special');
+    this.words = this.shadowRoot.getElementById('words');
     this.short = this.shadowRoot.getElementById('short');
     this.long = this.shadowRoot.getElementById('long');
-    this.spec = this.shadowRoot.getElementById('spec');
     this.sent = this.shadowRoot.getElementById('sent');
+    this.lines = this.shadowRoot.getElementById('lines');
     this.para = this.shadowRoot.getElementById('para');
-    this.hash = this.shadowRoot.getElementById('hash');
+    this.json = this.shadowRoot.getElementById('json');
+
     this.freq = this.shadowRoot.getElementById('freq');
+
     this.resizeHandle = this.shadowRoot.getElementById('resizeHandle');
 
     this.timeout = null;
@@ -47,6 +51,9 @@ customElements.define('text-analyses', class extends HTMLElement {
       // character cound does not account symbols
       this.chars.textContent = text.length;
 
+      // byte count usually just the same as character length
+      this.bytes.textContent = new Blob([text]).size;
+
       // word count
       let words = text.replace(/(^\s*)|(\s*$)/gi, '');
       words = words.replace(/[ ]{2,}/gi, ' ');
@@ -65,14 +72,25 @@ customElements.define('text-analyses', class extends HTMLElement {
 
       // special character count
       const specialChars = /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?~`]/gi;
-      this.spec.textContent = (text.match(specialChars) || []).length;
+      this.special.textContent = (text.match(specialChars) || []).length;
 
       // count sentences
       const sPattern = /([.?!])\s*(?=[A-Z0-9])/g;
       this.sent.textContent = text.replace(/\|/g, '').replace(sPattern, '$1|').split('|').length;
 
+      // lines
+      this.lines.textContent = text.split(/\r\n|\r|\n/).length;
+
       // count paragraphs
       this.para.textContent = text.replace(/\n$/gm, '').split(/\n/).length;
+
+      // validate json
+      try {
+        JSON.parse(text);
+        this.json.textContent = 'TRUE';
+      } catch {
+        this.json.textContent = 'FALSE';
+      }
 
       // word frequency call webworker frequency
       const options = {

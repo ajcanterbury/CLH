@@ -28,7 +28,29 @@
       -moz-user-select: text;
       user-select: text;
     }
+    button {
+      background: none;
+      float: right;
+      font-size: 1.1rem;
+      color: var(--faint-color);
+      padding: 0.6rem 1rem;
+      border: none;
+      border-radius: 0;
+      margin-top: -0.2em;
+      margin-right: -0.2em;
+    }
+    button:hover {
+      color: var(--primary-color);
+      text-shadow: 0 0 0.8rem var(--highlight-color);
+    }
+    button:active, button:focus {
+      outline: none;
+      color: white;
+    }
     @media only screen and (max-width: 400px) {
+      input {
+        width: 10rem;
+      }
       input[type="time"] {
         min-width: 6rem;
         width: 7.3rem;
@@ -48,7 +70,9 @@
   <br/><br/>
   <span>Unix Epoch: </span>
   <input id="epochTime" type="number" min="0"/>
+  <button id="unixCopy"><copy-component/></button>
   <br/><br/>
   <span>Milliseconds: </span>
   <input id="milliTime" type="number" min="0"/>
+  <button id="milliCopy"><copy-component/></button>
 </template>

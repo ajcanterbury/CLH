@@ -44,18 +44,19 @@
       border-radius: 0;
     }
     #gradDisplay {
-      width: 100%;
+      width: calc(100% - 1.1rem);
       box-sizing: border-box;
       height: 4rem;
-      margin: 1rem 0 1.5rem 0;
+      margin: 1rem auto 1.5rem auto;
       background: linear-gradient(45deg, red, blue);
     }
     #gradSlider {
       position: absolute;
       box-sizing: border-box;
-      width: calc(100% - 1.1rem);
+      width: calc(100% - 1.2rem);
+      margin: auto;
       height: 6.5rem;
-      left: 0;
+      left: 0.5remem;
       top: 4.6rem;
     }
     .colorSlider {
@@ -67,11 +68,32 @@
     }
     .colorSlider hr {
       transform: rotate(90deg);
-      width: 4.5rem;
+      width: 4.6rem;
       position: relative;
       left: -1.8rem;
       top: 2.7rem;
       background: rgb(120 , 122, 122);
+      height: 0.1em;
+      cursor: -moz-grab;
+      cursor: -webkit-grab;
+    }
+    .colorSlider::after {
+      color: white;
+      content: ">";
+      position: absolute;
+      top: 40%;
+      left: 0.75em;
+      cursor: -moz-grab;
+      cursor: -webkit-grab;
+    }
+    .colorSlider::before {
+      color: white;
+      content: "<";
+      position: absolute;
+      top: 40%;
+      left: -0.3em;
+      cursor: -moz-grab;
+      cursor: -webkit-grab;
     }
     .colorSlider div {
       width: 1rem;
@@ -106,18 +128,37 @@
       display: none;
     }
     #output {
-        margin-top: 1rem;
-        padding: 0.5rem;
-        box-sizing: border-box;
-        max-width: 100%;
-        min-width: 18rem;
-        width: 25rem;
-        font-size: 0.9em;
-        overflow-y: auto;
-        -webkit-user-select: text;
-        -moz-user-select: text;
-        user-select: text;
-      }
+      margin-top: 1rem;
+      padding: 0.5rem;
+      box-sizing: border-box;
+      max-width: 100%;
+      min-width: 18rem;
+      width: 25rem;
+      font-size: 0.9em;
+      overflow-y: auto;
+      -webkit-user-select: text;
+      -moz-user-select: text;
+      user-select: text;
+    }
+    #copy {
+      background: none;
+      float: right;
+      font-size: 1.1rem;
+      color: var(--faint-color);
+      padding: 0.6rem 1rem;
+      border: none;
+      border-radius: 0;
+      margin-top: -1.5em;
+      margin-right: -0.4em;
+    }
+    #copy:hover {
+      color: var(--primary-color);
+      text-shadow: 0 0 0.8rem var(--highlight-color);
+    }
+    #copy:active, #copy:focus {
+      outline: none;
+      color: white;
+    }
   </style>
   <button id="gradAdd">+ add</button>
   <select id="gradType">
@@ -144,7 +185,7 @@
         <hr/>
         <div style="background:#FF0000;"></div>
       </div>
-      <div class="colorSlider" id="color-2" style="left: 100%;">
+      <div class="colorSlider" id="color-2" style="left: calc(100% - 1em);">
         <hr/>
         <div style="background:#0000FF;"></div>
       </div>
@@ -156,4 +197,5 @@
     <button id="gradDelete">- delete</button>
   </div>
   <div id="output">linear-gradient(45deg, rgb(255, 0, 0) 0%, rgb(0, 0, 255) 100%)</div>
+  <button id="copy"><copy-component/></button>
 </template>

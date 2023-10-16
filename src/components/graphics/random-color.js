@@ -1,4 +1,4 @@
-import randomColor from '/components/graphics/random-color-lib.js';
+import randomColor from '/components/libs/random-color-lib.js';
 
 // custom element
 customElements.define('random-color', class extends HTMLElement {

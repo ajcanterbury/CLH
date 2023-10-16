@@ -23,18 +23,26 @@
       color: #dee0f7;
     }
     button {
-      background: var(--fainter-color);
+      background: none;
       float: right;
       font-size: 1.1rem;
-      color: #dee0f7;
-      padding: 0.11rem 0.6rem;
-      border: 0.01rem solid var(--secondary-color);
+      color: var(--faint-color);
+      padding: 0.6rem 1rem;
+      border: none;
       border-radius: 0;
+    }
+    button:hover {
+      color: var(--primary-color);
+      text-shadow: 0 0 0.8rem var(--highlight-color);
+    }
+    button:active, button:focus {
+      outline: none;
+      color: white;
     }
     #output {
       margin-top:1rem;
       padding: 0.5rem;
-      min-width: 15rem;
+      min-width: 5rem;
       max-width: 100%;
       min-height: 6.5rem;
       height: calc(100% - 6.2rem);
@@ -123,7 +131,7 @@
     <option value="2">&Sqrt;2 to decimal</option>
   </select>
   <input type="number" min="1" max="2000" value="20"/>
-  <button>copy</button>
+  <button><copy-component/></button>
   <div id="output"></div>
   <div id="loader">
     <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>

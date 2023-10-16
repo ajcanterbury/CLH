@@ -1,0 +1,84 @@
+<template>
+  <style>
+    :host {
+      min-height: 20rem;
+    }
+    textarea {
+      display:block;
+      padding: 0.5rem;
+      width: 100%;
+      box-sizing: border-box;
+      max-width: 100%;
+      font-size: 0.9rem;
+      min-height: 5rem;
+      height: calc(50% - 4rem);
+      background: #dee0f7;
+      color: #202020;
+      overflow-y: auto;
+      margin-top:1rem;
+    }
+    #textIn {
+      border: solid 0.2rem var(--fainter-color);
+    }
+    select {
+      -webkit-appearance:none;
+      -moz-appearance:none;
+      margin-right:0.3rem;
+      appearance:none;
+      background: var(--fainter-color);
+      border: none;
+      border-radius: 0;
+      padding: 0.2rem 0.4rem;
+      font-size:1.1rem;
+      color: #dee0f7;
+    }
+    span {
+      margin-right: 1rem;
+    }
+    button {
+      background: none;
+      float: right;
+      font-size: 1.1rem;
+      padding: 0.6rem 1rem;
+      border: none;
+      border-radius: 0;
+      color: var(--faint-color);
+    }
+    button:hover {
+      color: var(--primary-color);
+      text-shadow: 0 0 0.8rem var(--highlight-color);
+    }
+    button:active, button:focus {
+      outline: none;
+      color: white;
+    }
+    #output {
+      margin-top:1rem;
+      padding: 0.5rem;
+      max-width: 100%;
+      min-height: 5rem;
+      height: calc(50% - 4rem);
+      background: #dee0f7;
+      color: #202020;
+      overflow-y: auto;
+      -webkit-user-select: text;
+      -moz-user-select: text;
+      user-select: text;
+      word-wrap: break-word;
+    }
+  </style>
+  <select id="textType">
+    <option value="json">JSON</option>
+    <option value="html">HTML</option>
+    <option value="text">text</option>
+  </select>
+  <select id="indentType">
+    <option value="tab">tab</option>
+    <option value="2">2-spaces</option>
+    <option value="4">4-spaces</option>
+    <option value="6">6-spaces</option>
+  </select>
+  <button><copy-component></copy-component></button>
+  <textarea id="textIn" placeholder="text to beautify"></textarea>
+  <textarea id="output" readonly="readonly"></textarea>
+</template>

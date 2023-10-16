@@ -1,5 +1,16 @@
 <template>
   <style>
+    section {
+      padding-bottom: 0.5rem;
+    }
+    .inTime {
+      display: grid;
+      grid-template-columns: 2.6rem 1fr 9.2rem;
+    }
+    .outTime {
+      display: grid;
+      grid-template-columns: 2.6rem 1fr 3rem 6.7rem;
+    }
     input {
       margin-right:0.3rem;
       background: var(--fainter-color);
@@ -8,7 +19,6 @@
       font-size:1rem;
       width: 5.85rem;
       color: #dee0f7;
-      float: right;
     }
     input[type="time"] {
       min-width: 8.4rem;
@@ -16,20 +26,33 @@
     input[type="date"] {
       width: 8.8rem;
     }
-    #days, #hours {
-      float:none;
+    @media only screen and (max-width: 400px) {
+      input[type="date"] {
+        width: 7.1rem;
+      }
     }
   </style>
-  <span>From: </span>
-  <input id="startTime" type="time"/>
-  <input id="startDate" type="date"/>
-  <br/><br/>
-  <span>to: </span>
-  <input id="modTime" type="time"/>
-  <input id="modDate" type="date"/>
-  <br/><br/>
-  <span>Days: </span>
-  <input id="days" type="number" value="0"/>
-  <span> Hours: </span>
-  <input id="hours" type="number" min="-1" max="24" value="0"/>
+  <section id="fromTime" class="inTime">
+    <span>From: </span>
+    <input id="startDate" type="date"/>
+    <input id="startTime" type="time"/>
+  </section>
+  <section id="toTime" class="inTime">
+    <span>to: </span>
+    <input id="modDate" type="date"/>
+    <input id="modTime" type="time"/>
+  </section>
+  <br/>
+  <section id="daysHours" class="outTime">
+    <span>Days: </span>
+    <input id="days" type="number" value="0"/>
+    <span> Hours: </span>
+    <input id="hours" type="number" min="-1" max="24" value="0"/>
+  </section>
+  <section id="minSecs" class="outTime">
+    <span>Mins: </span>
+    <input id="minutes" type="number" min="-1" max="60" value="0"/>
+    <span> Secs: </span>
+    <input id="seconds" type="number" min="-1" max="60" value="0"/>
+  </section>
 </template>
