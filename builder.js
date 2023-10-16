@@ -134,6 +134,7 @@ fs.readFile('src/index.html', 'utf8', (err, contents) => {
 // Minify all the (rest of the) things!
 miniFi('clh-loader.js');
 miniFi('clh.css');
+miniFi('copy.css');
 miniFi('menu/clh-menu.html');
 miniFi('menu/clh-menu.js');
 

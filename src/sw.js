@@ -6,6 +6,7 @@ const FILES = [
   'https://fonts.googleapis.com/css?family=Source+Sans+Pro',
   '/clh.css',
   '/clh-loader.js',
+  '/copy.css',
   '/manifest.json',
   '/android-chrome-96x96.png',
   '/apple-touch-icon.png',
