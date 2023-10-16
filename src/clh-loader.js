@@ -159,7 +159,7 @@ export const addComponent = (category, component) => {
 
 // delete component with wrapper, actually this just hides it
 export const deleteComponent = (category, component) => {
-  document.getElementById(component).classList.remove('show');
+  document.getElementById(component)?.classList.remove('show');
   component = component.replace('-wrap', '');
   if (document.head.querySelector(`script[src="components/${category}/${component}.js"]`)) {
     document.head.querySelector(`script[src="components/${category}/${component}.js"]`).remove();
@@ -176,6 +176,11 @@ const checkHelpers = () => {
   objectStore.openCursor().onsuccess = (ev) => {
     const cursor = ev.target.result;
     if (cursor) {
+      if (cursor.key === 'color-palette') { // clear out old
+        deleteComponent('graphics', 'color-palette');
+        cursor.continue();
+        return;
+      }
       addComponent(cursor.value.category, cursor.key);
       document.querySelector(`li[data-component="${cursor.key}"] input`).checked = true;
       cursor.continue();
