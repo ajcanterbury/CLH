@@ -12,10 +12,10 @@
   "license": "MIT",
   "devDependencies": {
     "eslint": "^8.51.0",
-    "express": "^4.19.2",
+    "express": "^4.22.1",
     "html-minifier": "^4.0.0",
     "ncp": "^2.0.0",
-    "reload": "^3.2.1",
+    "reload": "^3.4.2",
     "supervisor": "^0.12.0",
     "uglify-js": "^3.17.4",
     "uglifycss": "^0.0.29"
